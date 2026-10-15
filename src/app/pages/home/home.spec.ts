@@ -96,6 +96,11 @@ describe('Home', () => {
     const el = await render();
     const svg = el.querySelector('section#about app-logo-mark svg');
     expect(svg?.getAttribute('width')).toBe('260');
+    // Only the spiral spins; the center dot (the "eye") stays still.
+    expect(svg?.querySelector('path')?.getAttribute('class')).toBe('motion-safe:animate-cyclone');
+    // The sweep goes past the viewBox, so the svg must not clip it.
+    expect(svg?.classList).toContain('overflow-visible');
+    expect(svg?.querySelector('circle')?.getAttribute('class')).toBeNull();
   });
 
   describe('newsletter', () => {

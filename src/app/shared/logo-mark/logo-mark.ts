@@ -4,6 +4,9 @@ import { Component, input } from '@angular/core';
  * The cikloni spiral mark: "eye of the cyclone".
  * `color` sets the spiral, `dotColor` the calm center dot. Both accept any CSS color; use the
  * Tailwind theme variables, e.g. `var(--color-blush)` for the dot on dark sections.
+ * The spiral rotates around the dot at (100, 100), the center of the viewBox is (100, 114).
+ * While spinning, the outer arm sweeps past the viewBox edges, so the svg is overflow-visible and
+ * the parent must leave room around it.
  */
 @Component({
   selector: 'app-logo-mark',
@@ -12,6 +15,7 @@ import { Component, input } from '@angular/core';
     <svg
       viewBox="34 48 132 132"
       class="block"
+      [class.overflow-visible]="spin()"
       [attr.width]="size()"
       [attr.height]="size()"
       aria-hidden="true"
@@ -22,6 +26,8 @@ import { Component, input } from '@angular/core';
         fill="none"
         stroke-width="11"
         stroke-linecap="round"
+        style="transform-box: view-box; transform-origin: 100px 100px"
+        [attr.class]="spin() ? 'motion-safe:animate-cyclone' : null"
         [style.stroke]="color()"
       />
       <circle cx="100" cy="100" r="6" [style.fill]="dotColor()" />
@@ -33,4 +39,6 @@ export class LogoMark {
   readonly size = input(40);
   readonly color = input('var(--color-coral)');
   readonly dotColor = input('var(--color-plum)');
+  /** Slowly turns the spiral around the still center dot (off for prefers-reduced-motion). */
+  readonly spin = input(false);
 }

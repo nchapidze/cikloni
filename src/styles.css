@@ -61,6 +61,15 @@
   --text-wordmark--line-height: 1;
   --text-wordmark-sm: 1.625rem; /* 26px, narrow phones */
   --text-wordmark-sm--line-height: 1;
+
+  /* Motion: the about-section logo; counterclockwise like a northern-hemisphere cyclone. */
+  --animate-cyclone: cyclone 16s linear infinite;
+
+  @keyframes cyclone {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
 }
 
 @layer base {
