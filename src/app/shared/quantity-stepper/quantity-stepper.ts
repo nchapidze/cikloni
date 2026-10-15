@@ -14,7 +14,7 @@ import { LucideAngularModule, Minus, Plus } from 'lucide-angular';
     <div
       role="group"
       class="inline-flex items-center rounded-pill border-2 border-plum"
-      [attr.aria-label]="'PRODUCT.QUANTITY.LABEL' | translate"
+      [attr.aria-label]="label() ?? ('PRODUCT.QUANTITY.LABEL' | translate)"
     >
       <button
         type="button"
@@ -44,6 +44,8 @@ export class QuantityStepper {
   readonly value = model(1);
   readonly min = input(1);
   readonly max = input(10);
+  /** Group label; defaults to "Quantity". Set it when several steppers share a page. */
+  readonly label = input<string>();
 
   protected readonly icons = { minus: Minus, plus: Plus };
 
