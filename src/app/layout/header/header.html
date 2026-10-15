@@ -1,0 +1,75 @@
+<div class="relative border-b border-border bg-background">
+  <div class="mx-auto flex min-h-19 max-w-page items-center justify-between gap-4 px-6">
+    <a
+      routerLink="/"
+      class="inline-flex min-h-11 items-center gap-2 text-plum no-underline"
+      [attr.aria-label]="'HEADER.HOME' | translate"
+    >
+      <app-logo-mark [size]="40" />
+      <span class="font-brand text-wordmark-sm font-semibold xs:text-wordmark" aria-hidden="true"
+        >cikloni</span
+      >
+    </a>
+
+    <!-- Mobile first: a dropdown panel under the header; inline from the `nav` breakpoint up. -->
+    <nav
+      id="main-nav"
+      class="absolute inset-x-0 top-full z-20 flex-col items-start gap-4 border-b border-border bg-background px-6 pt-2 pb-6 nav:static nav:flex nav:flex-row nav:items-center nav:border-0 nav:bg-transparent nav:p-0"
+      [class.hidden]="!menuOpen()"
+      [class.flex]="menuOpen()"
+      [attr.aria-label]="'HEADER.NAV_LABEL' | translate"
+    >
+      <ul class="m-0 w-full list-none p-0 nav:flex nav:w-auto nav:gap-6">
+        @for (link of links; track link.fragment) {
+          <li>
+            <a
+              routerLink="/"
+              [fragment]="link.fragment"
+              class="flex min-h-11 min-w-11 items-center font-medium text-plum no-underline underline-offset-4 hover:underline nav:justify-center"
+              (click)="closeMenu()"
+              >{{ link.label | translate }}</a
+            >
+          </li>
+        }
+      </ul>
+      <app-language-toggle class="nav:hidden" />
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <app-language-toggle class="hidden nav:inline-flex" />
+
+      <!-- TODO: open the cart drawer once it exists. -->
+      <button
+        type="button"
+        class="relative inline-flex size-11 cursor-pointer items-center justify-center rounded-full border-0 bg-plum p-0 text-blush"
+        [attr.aria-label]="
+          cartCount() > 0
+            ? ('HEADER.CART_COUNT' | translate: { count: cartCount() })
+            : ('HEADER.CART' | translate)
+        "
+      >
+        <lucide-icon [img]="icons.cart" [size]="22" />
+        @if (cartCount() > 0) {
+          <span
+            class="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-pill bg-coral px-1 font-brand text-xs font-semibold text-plum"
+            aria-hidden="true"
+            data-testid="cart-count"
+            >{{ cartCount() > 99 ? '99+' : cartCount() }}</span
+          >
+        }
+      </button>
+
+      <button
+        #menuButton
+        type="button"
+        class="inline-flex size-11 cursor-pointer items-center justify-center rounded-full border-2 border-border bg-transparent p-0 text-plum nav:hidden"
+        aria-controls="main-nav"
+        [attr.aria-expanded]="menuOpen()"
+        [attr.aria-label]="(menuOpen() ? 'HEADER.MENU_CLOSE' : 'HEADER.MENU_OPEN') | translate"
+        (click)="toggleMenu()"
+      >
+        <lucide-icon [img]="menuOpen() ? icons.close : icons.menu" [size]="22" />
+      </button>
+    </div>
+  </div>
+</div>

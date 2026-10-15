@@ -1,0 +1,47 @@
+<footer class="bg-plum py-16 text-blush">
+  <div class="mx-auto flex max-w-page flex-wrap gap-x-8 gap-y-12 px-6">
+    <div class="basis-full lg:grow-2 lg:basis-70">
+      <a
+        routerLink="/"
+        class="inline-flex min-h-11 items-center gap-2 text-blush no-underline focus-visible:outline-blush"
+        [attr.aria-label]="'HEADER.HOME' | translate"
+      >
+        <app-logo-mark [size]="40" dotColor="var(--color-blush)" />
+        <span class="font-brand text-wordmark font-semibold" aria-hidden="true">cikloni</span>
+      </a>
+      <p class="mt-3 mb-0 max-w-3xs">{{ 'FOOTER.SLOGAN' | translate }}</p>
+    </div>
+
+    @for (column of columns; track column.title) {
+      <div class="grow basis-40">
+        <h2 class="mt-0 mb-3 text-base/heading font-extrabold">{{ column.title | translate }}</h2>
+        <ul class="m-0 list-none p-0">
+          @for (item of column.items; track item.label) {
+            <li>
+              @if (item.route) {
+                <a
+                  [routerLink]="item.route"
+                  [fragment]="item.fragment"
+                  class="inline-flex min-h-11 items-center text-blush/80 no-underline hover:text-blush hover:underline focus-visible:outline-blush"
+                  >{{ item.label | translate }}</a
+                >
+              } @else if (item.href) {
+                <a
+                  [href]="item.href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex min-h-11 items-center text-blush/80 no-underline hover:text-blush hover:underline focus-visible:outline-blush"
+                  >{{ item.label | translate }}</a
+                >
+              } @else {
+                <span class="inline-flex min-h-11 items-center text-blush/80">{{
+                  item.label | translate
+                }}</span>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</footer>
