@@ -10,3 +10,7 @@
 - No component .scss files unless something truly can't be done with Tailwind utilities.
 - Approved packages: Tailwind, ngx-translate, Lucide, Angular CDK, Prettier, ESLint. Ask before adding anything else
 - Translation keys are UPPER_SNAKE_CASE, nested by section with dots (e.g. HERO.TITLE, PRODUCT.ADD_TO_CART). Section names are uppercase too. ka.json and en.json must always have identical key structure.
+- Backend: Supabase (Postgres, Auth, Storage, Edge Functions). Row Level Security is enabled on every table.
+- Never trust prices, totals or stock from the browser. Orders are created server-side, where prices are recalculated from the database.
+- Secrets (service role key, payment keys) never go in Angular code or environment files committed to git.
+- The admin panel lives under /admin, is lazy-loaded, and is not translated (Georgian only).
