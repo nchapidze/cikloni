@@ -64,7 +64,7 @@ describe('App', () => {
     await TestBed.inject(Router).navigateByUrl('/');
     await fixture.whenStable();
     const el = fixture.nativeElement as HTMLElement;
-    const cartButton = () => el.querySelector<HTMLButtonElement>('header button:has(lucide-icon)')!;
+    const cartButton = () => el.querySelector<HTMLAnchorElement>('[data-testid="cart-button"]')!;
     const badge = () => el.querySelector('[data-testid="cart-count"]');
 
     expect(badge()).toBeNull();

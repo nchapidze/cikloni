@@ -38,10 +38,12 @@
     <div class="flex items-center gap-2">
       <app-language-toggle class="hidden nav:inline-flex" />
 
-      <!-- TODO: open the cart drawer once it exists. -->
-      <button
-        type="button"
+      <!-- A real link to /cart; on wider screens a plain click opens the drawer instead. -->
+      <a
+        href="/cart"
         class="relative inline-flex size-11 cursor-pointer items-center justify-center rounded-full border-0 bg-plum p-0 text-blush"
+        data-testid="cart-button"
+        (click)="openCart($event)"
         [attr.aria-label]="
           cartCount() > 0
             ? ('HEADER.CART_COUNT' | translate: { count: cartCount() })
@@ -57,7 +59,7 @@
             >{{ cartCount() > 99 ? '99+' : cartCount() }}</span
           >
         }
-      </button>
+      </a>
 
       <button
         #menuButton
