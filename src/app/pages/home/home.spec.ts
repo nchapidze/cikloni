@@ -37,6 +37,13 @@ describe('Home', () => {
     expect(cards[3].querySelector('span')?.textContent?.trim()).toBe('4');
   });
 
+  it('renders the calculator teaser right after the benefits', async () => {
+    const el = await render();
+    const teaser = el.querySelector('app-calculator-teaser-section');
+    expect(teaser?.previousElementSibling?.tagName).toBe('APP-BENEFITS-SECTION');
+    expect(teaser?.querySelector('a')?.getAttribute('href')).toBe('/calculator');
+  });
+
   it('renders product cards linking to /product/:slug', async () => {
     const el = await render();
     expect(el.querySelector('section#shop')).toBeTruthy();

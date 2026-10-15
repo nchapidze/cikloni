@@ -3,6 +3,7 @@ import { AboutSection } from './sections/about-section';
 import { AbsorbencySection } from './sections/absorbency-section';
 import { BenefitsSection } from './sections/benefits-section';
 import { BestsellersSection } from './sections/bestsellers-section';
+import { CalculatorTeaserSection } from './sections/calculator-teaser-section';
 import { FaqSection } from './sections/faq-section';
 import { HeroSection } from './sections/hero-section';
 import { HowItWorksSection } from './sections/how-it-works-section';
@@ -14,6 +15,7 @@ import { NewsletterSection } from './sections/newsletter-section';
   imports: [
     HeroSection,
     BenefitsSection,
+    CalculatorTeaserSection,
     BestsellersSection,
     HowItWorksSection,
     AbsorbencySection,
@@ -24,6 +26,7 @@ import { NewsletterSection } from './sections/newsletter-section';
   template: `
     <app-hero-section />
     <app-benefits-section />
+    <app-calculator-teaser-section />
     <app-bestsellers-section />
     <app-how-it-works-section />
     <app-absorbency-section />
