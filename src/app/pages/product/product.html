@@ -1,0 +1,137 @@
+@if (product(); as p) {
+  @let level = absorbency[p.absorbency];
+  @let price =
+    p.price === null
+      ? ('PRODUCTS.PRICE_PLACEHOLDER' | translate)
+      : ('PRODUCTS.PRICE' | translate: { price: p.price });
+
+  <div class="mx-auto max-w-page px-6 pt-6 pb-20">
+    <nav class="mb-6 text-sm" [attr.aria-label]="'PRODUCT.BREADCRUMB.LABEL' | translate">
+      <ol class="m-0 flex list-none flex-wrap items-center gap-x-1.5 p-0">
+        <li>
+          <a routerLink="/" class="inline-flex min-h-11 min-w-11 items-center justify-center">{{
+            'PRODUCT.BREADCRUMB.HOME' | translate
+          }}</a>
+        </li>
+        <li class="flex items-center gap-1.5">
+          <span aria-hidden="true">/</span>
+          <a
+            routerLink="/"
+            fragment="shop"
+            class="inline-flex min-h-11 min-w-11 items-center justify-center"
+            >{{ 'PRODUCT.BREADCRUMB.SHOP' | translate }}</a
+          >
+        </li>
+        <li class="flex items-center gap-1.5">
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{{ p.nameKey | translate }}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <div class="flex flex-wrap gap-12">
+      <!-- Gallery. TODO: replace placeholders with product photos. -->
+      <div class="flex min-w-0 grow basis-120 flex-col gap-4" aria-hidden="true">
+        <div
+          class="flex h-96 items-end rounded-hero p-6 font-bold transition-colors duration-300 motion-reduce:transition-none md:h-140"
+          data-testid="main-image"
+          [style.background-color]="currentColor().soft"
+        >
+          {{ 'PRODUCT.PHOTO_LABEL' | translate: { color: (currentColor().nameKey | translate) } }}
+        </div>
+        <div class="flex gap-4">
+          <div class="flex h-35 flex-1 items-end rounded-panel bg-lilac p-3 text-sm font-bold">
+            {{ 'PRODUCT.THUMBNAILS.MODEL' | translate }}
+          </div>
+          <div class="flex h-35 flex-1 items-end rounded-panel bg-sunny p-3 text-sm font-bold">
+            {{ 'PRODUCT.THUMBNAILS.BACK' | translate }}
+          </div>
+          <div class="flex h-35 flex-1 items-end rounded-panel bg-mint p-3 text-sm font-bold">
+            {{ 'PRODUCT.THUMBNAILS.LAYERS' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Product info -->
+      <div class="flex min-w-0 grow basis-100 flex-col gap-6">
+        <div class="flex flex-col gap-2">
+          @if (p.bestseller) {
+            <p class="m-0 self-start rounded-pill bg-sunny-soft px-3 py-1 text-sm font-bold">
+              {{ 'PRODUCT.BADGE' | translate }}
+            </p>
+          }
+          <h1 class="m-0 text-3xl sm:text-4xl md:text-title">{{ p.nameKey | translate }}</h1>
+          <p class="m-0 text-2xl font-bold">{{ price }}</p>
+        </div>
+
+        <div class="flex items-center gap-3 rounded-2xl bg-blush px-4.5 py-3.5">
+          <app-absorbency-drops class="shrink-0" [level]="level.drops" [size]="20" />
+          <p class="m-0">
+            <strong>{{
+              'PRODUCT.ABSORBENCY.LABEL' | translate: { level: (level.nameKey | translate) }
+            }}</strong>
+            — {{ level.noteKey | translate }}
+          </p>
+        </div>
+
+        <app-color-swatch-picker [colors]="colors()" [(selected)]="color" />
+        <app-size-picker [sizes]="p.sizes" [(selected)]="size" />
+
+        <div class="flex flex-wrap gap-3">
+          <app-quantity-stepper [(value)]="quantity" />
+          <button
+            type="button"
+            class="min-h-14 grow basis-55 cursor-pointer rounded-pill border-0 bg-plum px-6 py-2 text-base/tight font-bold text-blush sm:text-lg/tight"
+            data-testid="add-to-cart"
+            (click)="addToCart()"
+          >
+            {{ (added() ? 'PRODUCT.ADDED_TO_CART' : 'PRODUCT.ADD_TO_CART') | translate }}
+          </button>
+        </div>
+        <!-- Announces the add for screen readers; the button label changes silently. -->
+        <p class="sr-only" role="status">
+          @if (added()) {
+            {{ 'PRODUCT.ADDED_TO_CART' | translate }}
+          }
+        </p>
+
+        <ul class="m-0 flex list-none flex-wrap gap-4 p-0 text-sm">
+          <li class="rounded-pill bg-mint-tint px-3 py-1.5">
+            {{ 'PRODUCT.TRUST.DISCREET' | translate }}
+          </li>
+          <li class="rounded-pill bg-lilac-tint px-3 py-1.5">
+            {{ 'PRODUCT.TRUST.REUSABLE' | translate }}
+          </li>
+          <li class="rounded-pill bg-sunny-tint px-3 py-1.5">
+            {{ 'PRODUCT.TRUST.PAD_FREE' | translate }}
+          </li>
+        </ul>
+
+        <div class="border-b border-border">
+          @for (section of details(); track section.title) {
+            <details class="group border-t border-border" [open]="$first">
+              <summary
+                class="flex min-h-13 cursor-pointer list-none items-center justify-between gap-4 font-bold"
+              >
+                {{ section.title | translate }}
+                <lucide-icon
+                  [img]="chevron"
+                  [size]="20"
+                  class="shrink-0 transition-transform group-open:rotate-180 motion-reduce:transition-none"
+                />
+              </summary>
+              <p class="m-0 pb-3.5">{{ section.text | translate }}</p>
+            </details>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="mx-auto flex max-w-page flex-col items-start gap-4 px-6 py-20">
+    <h1 class="m-0 text-4xl">{{ 'PRODUCT.NOT_FOUND.TITLE' | translate }}</h1>
+    <a routerLink="/" class="inline-flex min-h-11 items-center font-bold">{{
+      'PRODUCT.NOT_FOUND.BACK' | translate
+    }}</a>
+  </div>
+}
