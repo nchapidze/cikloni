@@ -1,0 +1,137 @@
+@let drawer = layout() === 'drawer';
+
+@if (lines().length) {
+  <div
+    class="flex min-h-0 flex-1 flex-col"
+    [class]="drawer ? '' : 'gap-8 md:flex-row md:items-start md:gap-12'"
+  >
+    <ul
+      #list
+      tabindex="-1"
+      class="m-0 min-h-0 flex-1 list-none p-0"
+      [class]="drawer ? 'overflow-y-auto px-6' : 'border-t border-border'"
+      [attr.aria-label]="'CART.ITEMS_LABEL' | translate"
+    >
+      @for (line of lines(); track line.item.id) {
+        @let name = line.product.nameKey | translate;
+        @let colorName = line.color.nameKey | translate;
+        @let description =
+          'CART.LINE.DESCRIPTION' | translate: { name, color: colorName, size: line.item.size };
+
+        <li class="flex gap-4 border-b border-border py-5" data-testid="cart-line">
+          <!-- TODO: replace with the product photo. -->
+          <div
+            class="size-20 shrink-0 rounded-panel sm:size-24"
+            aria-hidden="true"
+            [style.background-color]="line.color.soft"
+          ></div>
+
+          <div class="flex min-w-0 flex-1 flex-col gap-3">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <p class="m-0 font-bold">
+                  <a
+                    class="inline-flex min-h-11 items-center no-underline hover:underline"
+                    [routerLink]="['/product', line.product.slug]"
+                    >{{ name }}</a
+                  >
+                </p>
+                <p class="m-0 text-sm">
+                  {{ 'CART.LINE.COLOR' | translate: { color: colorName } }}
+                  <span aria-hidden="true">·</span>
+                  {{ 'CART.LINE.SIZE' | translate: { size: line.item.size } }}
+                </p>
+              </div>
+              <button
+                type="button"
+                class="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 text-plum hover:bg-blush"
+                data-testid="cart-remove"
+                [attr.aria-label]="'CART.LINE.REMOVE' | translate: { item: description }"
+                (click)="remove(line)"
+              >
+                <lucide-icon [img]="trash" [size]="20" />
+              </button>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <app-quantity-stepper
+                [value]="line.item.quantity"
+                [max]="maxQuantity"
+                [label]="'CART.LINE.QUANTITY' | translate: { item: description }"
+                (valueChange)="setQuantity(line.item, $event)"
+              />
+              <p class="m-0 font-bold" data-testid="cart-line-price">
+                {{
+                  line.lineTotal === null
+                    ? ('PRODUCTS.PRICE_PLACEHOLDER' | translate)
+                    : ('PRODUCTS.PRICE' | translate: { price: line.lineTotal })
+                }}
+              </p>
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+
+    <div
+      class="flex flex-col gap-4 bg-blush"
+      [class]="
+        drawer ? 'border-t border-border px-6 py-5' : 'rounded-card p-6 md:sticky md:top-6 md:w-90'
+      "
+    >
+      <dl class="m-0 flex items-baseline justify-between gap-4">
+        <dt class="font-bold">{{ 'CART.SUBTOTAL' | translate }}</dt>
+        <dd class="m-0 text-xl font-bold" data-testid="cart-subtotal">
+          {{
+            subtotal() === null
+              ? ('PRODUCTS.PRICE_PLACEHOLDER' | translate)
+              : ('PRODUCTS.PRICE' | translate: { price: subtotal() })
+          }}
+        </dd>
+      </dl>
+      <p class="m-0 text-sm">{{ 'CART.DELIVERY_NOTE' | translate }}</p>
+      <!-- TODO: the checkout page does not exist yet. -->
+      <a
+        routerLink="/checkout"
+        class="flex min-h-14 items-center justify-center rounded-pill bg-plum px-6 py-2 text-center font-bold text-blush no-underline"
+        data-testid="cart-checkout"
+        >{{ 'CART.CHECKOUT' | translate }}</a
+      >
+    </div>
+  </div>
+} @else {
+  <div
+    class="flex flex-col items-center gap-3 text-center"
+    [class]="drawer ? 'px-6 py-12' : 'py-12'"
+    data-testid="cart-empty"
+  >
+    <p class="m-0 text-xl font-extrabold">{{ 'CART.EMPTY.TITLE' | translate }}</p>
+    <p class="m-0">{{ 'CART.EMPTY.TEXT' | translate }}</p>
+    <a
+      #shopLink
+      routerLink="/"
+      fragment="shop"
+      class="mt-3 flex min-h-14 items-center justify-center rounded-pill bg-plum px-8 py-2 font-bold text-blush no-underline"
+      >{{ 'CART.EMPTY.SHOP' | translate }}</a
+    >
+  </div>
+}
+
+<p class="sr-only" role="status">
+  @if (removed(); as item) {
+    {{
+      'CART.LINE.REMOVED'
+        | translate
+          : {
+              item:
+                'CART.LINE.DESCRIPTION'
+                | translate
+                  : {
+                      name: (item.nameKey | translate),
+                      color: (item.colorKey | translate),
+                      size: item.size,
+                    },
+            }
+    }}
+  }
+</p>

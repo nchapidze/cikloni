@@ -276,5 +276,26 @@
       "TEXT": "Enter what you spend on pads or tampons and see what changes when you switch to Cikloni.",
       "CTA": "Calculate your savings"
     }
+  },
+  "CART": {
+    "TITLE": "Your cart",
+    "CLOSE": "Close cart",
+    "ITEMS_LABEL": "Items in your cart",
+    "LINE": {
+      "DESCRIPTION": "{{name}}, {{color}}, {{size}}",
+      "COLOR": "Color: {{color}}",
+      "SIZE": "Size: {{size}}",
+      "QUANTITY": "Quantity — {{item}}",
+      "REMOVE": "Remove {{item}}",
+      "REMOVED": "Removed from your cart: {{item}}"
+    },
+    "SUBTOTAL": "Subtotal",
+    "DELIVERY_NOTE": "Delivery is calculated at checkout.",
+    "CHECKOUT": "Go to checkout",
+    "EMPTY": {
+      "TITLE": "Your cart is empty",
+      "TEXT": "Find a color and size you love.",
+      "SHOP": "Go to the shop"
+    }
   }
 }
