@@ -1,0 +1,226 @@
+{
+  "HEADER": {
+    "SKIP_TO_CONTENT": "Skip to main content",
+    "ANNOUNCEMENT": "Stay calm on stormy days",
+    "HOME": "Cikloni — home page",
+    "NAV_LABEL": "Main navigation",
+    "MENU_OPEN": "Open menu",
+    "MENU_CLOSE": "Close menu",
+    "CART": "Cart",
+    "CART_COUNT": "Cart ({{count}})",
+    "LANGUAGE_SWITCH": "ქართულზე გადართვა",
+    "NAV": {
+      "SHOP": "Shop",
+      "HOW": "How it works",
+      "ABSORBENCY": "Absorbency",
+      "FAQ": "FAQ",
+      "ABOUT": "About us"
+    }
+  },
+  "HERO": {
+    "BADGE": "The most colorful period underwear",
+    "TITLE": "Stay calm on stormy days",
+    "TEXT": "Beautiful, colorful underwear that keeps you protected on your period, no pads needed. Save money, care for the planet and feel comfortable.",
+    "SHOP_NOW": "Shop now",
+    "HOW_IT_WORKS": "How it works",
+    "MODEL_PHOTO": "Model photo",
+    "PRODUCT_PHOTO": "Product photo"
+  },
+  "BENEFITS": {
+    "TITLE": "Benefits",
+    "SAVE": {
+      "TITLE": "Save money",
+      "TEXT": "Reusable underwear replaces disposable pads, month after month."
+    },
+    "NATURE": {
+      "TITLE": "Care for the planet",
+      "TEXT": "Less single-use waste with every cycle."
+    },
+    "COMFORT": {
+      "TITLE": "Feel comfortable",
+      "TEXT": "Soft, breathable fabric you'll forget you're wearing."
+    },
+    "PROTECTION": {
+      "TITLE": "Leak protection",
+      "TEXT": "A multi-layer absorbent lining, so you can stay calm."
+    }
+  },
+  "PRODUCTS": {
+    "TITLE": "Bestsellers",
+    "VIEW_ALL": "View all products",
+    "PRICE_PLACEHOLDER": "[price] ₾",
+    "PRICE": "{{price}} ₾",
+    "PHOTO": "Product photo",
+    "CARD_LABEL": "{{name}}, absorbency: {{level}}, {{price}}",
+    "ITEMS": {
+      "FLORAL_BIKINI": {
+        "NAME": "Floral bikini",
+        "DESCRIPTION": "A colorful floral bikini with a multi-layer absorbent lining. [fabric composition, number of layers, certificates]"
+      },
+      "SEAMLESS_HIPSTER": {
+        "NAME": "Seamless hipster",
+        "DESCRIPTION": "[description]"
+      },
+      "COLORFUL_BOXER": {
+        "NAME": "Colorful boxer",
+        "DESCRIPTION": "[description]"
+      },
+      "LACE_BRAZILIAN": {
+        "NAME": "Lace Brazilian",
+        "DESCRIPTION": "[description]"
+      }
+    }
+  },
+  "HOW_IT_WORKS": {
+    "TITLE": "How it works",
+    "STEPS": {
+      "WEAR": {
+        "TITLE": "Wear it",
+        "TEXT": "Wear it like regular underwear, no pad or tampon needed."
+      },
+      "WASH": {
+        "TITLE": "Wash it",
+        "TEXT": "Rinse in cold water, then machine wash on a cold cycle and air dry."
+      },
+      "REPEAT": {
+        "TITLE": "Repeat",
+        "TEXT": "Wear it again next cycle."
+      }
+    }
+  },
+  "ABSORBENCY": {
+    "TITLE": "Which one is right for you?",
+    "SUBTITLE": "Choose your absorbency level based on the kind of day you're having.",
+    "LEVELS": {
+      "LIGHT": {
+        "NAME": "Light",
+        "TEXT": "The first and last days of your cycle."
+      },
+      "MEDIUM": {
+        "NAME": "Medium",
+        "TEXT": "Regular days."
+      },
+      "HEAVY": {
+        "NAME": "Heavy",
+        "TEXT": "Your heaviest days and overnight."
+      }
+    }
+  },
+  "FAQ": {
+    "TITLE": "Frequently asked questions",
+    "ITEMS": {
+      "WEAR_TIME": {
+        "QUESTION": "How long can I wear them?",
+        "ANSWER": "[answer]"
+      },
+      "WASHING": {
+        "QUESTION": "How do I wash them?",
+        "ANSWER": "[answer]"
+      },
+      "PAIRS": {
+        "QUESTION": "How many pairs do I need for one cycle?",
+        "ANSWER": "[answer]"
+      },
+      "DELIVERY": {
+        "QUESTION": "How does delivery work?",
+        "ANSWER": "[answer]"
+      }
+    }
+  },
+  "ABOUT": {
+    "TITLE": "The eye of the cyclone",
+    "TEXT": "At the center of a cyclone there is always calm, no matter what's happening around it. That's why we named our brand Cikloni: we want you to feel that calm too, even on the stormiest days.",
+    "STORY": "[your story]"
+  },
+  "NEWSLETTER": {
+    "TITLE": "Be the first to know",
+    "TEXT": "New colors, special offers and our launch date.",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Your email",
+    "EMAIL_INVALID": "Please enter a valid email address.",
+    "THANKS": "Thank you! You'll be the first to hear our news.",
+    "SUBMIT": "Subscribe"
+  },
+  "FOOTER": {
+    "SLOGAN": "Stay calm on stormy days",
+    "SHOP": {
+      "TITLE": "Shop",
+      "ALL_PRODUCTS": "All products",
+      "SIZE_GUIDE": "Size guide"
+    },
+    "INFO": {
+      "TITLE": "Information",
+      "DELIVERY": "Delivery",
+      "RETURNS": "Returns policy",
+      "PRIVACY": "Privacy policy"
+    },
+    "CONTACT": {
+      "TITLE": "Contact",
+      "INSTAGRAM": "Instagram @cikloni.ge",
+      "DETAILS": "[phone / email]"
+    }
+  },
+  "PRODUCT": {
+    "BREADCRUMB": {
+      "LABEL": "Breadcrumb",
+      "HOME": "Home",
+      "SHOP": "Shop"
+    },
+    "BADGE": "Bestseller",
+    "PHOTO_LABEL": "Product photo — {{color}}",
+    "THUMBNAILS": {
+      "MODEL": "On model",
+      "BACK": "Back view",
+      "LAYERS": "Layers"
+    },
+    "ABSORBENCY": {
+      "LABEL": "Absorbency: {{level}}",
+      "NOTES": {
+        "LIGHT": "for the first and last days of your cycle",
+        "MEDIUM": "for regular days",
+        "HEAVY": "for your heaviest days and overnight"
+      }
+    },
+    "COLOR": {
+      "LABEL": "Color: {{color}}",
+      "OPTIONS": {
+        "CORAL": "Pink",
+        "LILAC": "Lilac",
+        "ORANGE": "Orange",
+        "MINT": "Mint"
+      }
+    },
+    "SIZE": {
+      "LABEL": "Size"
+    },
+    "QUANTITY": {
+      "LABEL": "Quantity",
+      "DECREASE": "Decrease quantity",
+      "INCREASE": "Increase quantity"
+    },
+    "ADD_TO_CART": "Add to cart",
+    "ADDED_TO_CART": "Added to cart ✓",
+    "TRUST": {
+      "DISCREET": "Discreet packaging",
+      "REUSABLE": "Reusable",
+      "PAD_FREE": "No pads needed"
+    },
+    "DETAILS": {
+      "DESCRIPTION": {
+        "TITLE": "Description"
+      },
+      "CARE": {
+        "TITLE": "Care",
+        "TEXT": "Rinse in cold water, machine wash on a cold cycle and air dry. Don't use fabric softener or a tumble dryer."
+      },
+      "DELIVERY": {
+        "TITLE": "Delivery and returns",
+        "TEXT": "[delivery time and cost in Tbilisi and the regions]. For hygiene reasons, returns are only accepted in unopened packaging."
+      }
+    },
+    "NOT_FOUND": {
+      "TITLE": "Product not found",
+      "BACK": "Back to the home page"
+    }
+  }
+}
