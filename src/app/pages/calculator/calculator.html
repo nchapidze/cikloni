@@ -1,0 +1,232 @@
+<section class="mx-auto flex max-w-page flex-col gap-10 px-6 py-12 md:py-20">
+  <div class="flex flex-col items-center gap-3 text-center">
+    <h1 class="m-0 text-3xl sm:text-4xl md:text-h1">{{ 'CALCULATOR.TITLE' | translate }}</h1>
+    <p class="m-0 max-w-140 text-lg">{{ 'CALCULATOR.SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-2">
+    <!-- Inputs -->
+    <form
+      class="flex flex-col gap-7 rounded-card border-2 border-border p-6 sm:p-8"
+      novalidate
+      [attr.aria-label]="'CALCULATOR.FORM_LABEL' | translate"
+      (submit)="$event.preventDefault()"
+    >
+      <fieldset class="m-0 border-0 p-0">
+        <legend class="mb-2.5 p-0 font-bold">{{ 'CALCULATOR.PRODUCT.LABEL' | translate }}</legend>
+        <div class="grid grid-cols-3 gap-1 rounded-pill border-2 border-plum p-1">
+          @for (option of productOptions; track option.id) {
+            <button
+              type="button"
+              class="min-h-11 cursor-pointer rounded-pill border-0 bg-transparent px-2 text-sm font-bold text-plum aria-pressed:bg-plum aria-pressed:text-blush sm:text-base"
+              [attr.aria-pressed]="option.id === currentProduct()"
+              (click)="currentProduct.set(option.id)"
+            >
+              {{ option.labelKey | translate }}
+            </button>
+          }
+        </div>
+      </fieldset>
+
+      <div class="flex flex-col gap-1">
+        <div class="flex items-baseline justify-between gap-4">
+          <label for="calc-per-day" class="font-bold">{{
+            'CALCULATOR.PER_DAY.LABEL' | translate
+          }}</label>
+          <output for="calc-per-day" class="font-brand text-xl font-semibold">{{
+            productsPerDay()
+          }}</output>
+        </div>
+        <input
+          id="calc-per-day"
+          type="range"
+          class="h-11 w-full cursor-pointer accent-plum"
+          [min]="limits.productsPerDay.min"
+          [max]="limits.productsPerDay.max"
+          step="1"
+          [value]="productsPerDay()"
+          (input)="productsPerDay.set(readNumber($event))"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="flex items-baseline justify-between gap-4">
+          <label for="calc-days" class="font-bold">{{ 'CALCULATOR.DAYS.LABEL' | translate }}</label>
+          <output for="calc-days" class="font-brand text-xl font-semibold">{{
+            periodDays()
+          }}</output>
+        </div>
+        <input
+          id="calc-days"
+          type="range"
+          class="h-11 w-full cursor-pointer accent-plum"
+          [min]="limits.periodDays.min"
+          [max]="limits.periodDays.max"
+          step="1"
+          [value]="periodDays()"
+          (input)="periodDays.set(readNumber($event))"
+        />
+      </div>
+
+      <div class="grid gap-5 xs:grid-cols-2">
+        <!-- [value] uses the constant default so re-renders never overwrite what is being typed. -->
+        <div class="flex flex-col gap-2">
+          <label for="calc-pack-price" class="font-bold">{{
+            'CALCULATOR.PACK_PRICE.LABEL' | translate
+          }}</label>
+          <input
+            id="calc-pack-price"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            class="min-h-12 w-full rounded-chip border-2 border-plum bg-background px-4 font-brand text-lg text-plum aria-invalid:border-coral-strong"
+            [value]="defaults.packPriceGel"
+            [attr.aria-invalid]="isInvalid('packPriceGel') || null"
+            [attr.aria-describedby]="isInvalid('packPriceGel') ? 'calc-pack-price-error' : null"
+            (input)="packPriceGel.set(readNumber($event))"
+          />
+          @if (isInvalid('packPriceGel')) {
+            <p
+              id="calc-pack-price-error"
+              class="m-0 flex items-center gap-1.5 text-sm font-semibold"
+            >
+              <lucide-icon [img]="alertIcon" [size]="18" />
+              {{ 'CALCULATOR.PACK_PRICE.ERROR' | translate }}
+            </p>
+          }
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="calc-pack-size" class="font-bold">{{
+            'CALCULATOR.PACK_SIZE.LABEL' | translate
+          }}</label>
+          <input
+            id="calc-pack-size"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            step="1"
+            class="min-h-12 w-full rounded-chip border-2 border-plum bg-background px-4 font-brand text-lg text-plum aria-invalid:border-coral-strong"
+            [value]="defaults.packSize"
+            [attr.aria-invalid]="isInvalid('packSize') || null"
+            [attr.aria-describedby]="isInvalid('packSize') ? 'calc-pack-size-error' : null"
+            (input)="packSize.set(readNumber($event))"
+          />
+          @if (isInvalid('packSize')) {
+            <p
+              id="calc-pack-size-error"
+              class="m-0 flex items-center gap-1.5 text-sm font-semibold"
+            >
+              <lucide-icon [img]="alertIcon" [size]="18" />
+              {{ 'CALCULATOR.PACK_SIZE.ERROR' | translate }}
+            </p>
+          }
+        </div>
+      </div>
+    </form>
+
+    <!-- Results -->
+    <div
+      class="flex flex-col gap-6 rounded-card bg-plum p-6 text-blush sm:p-8"
+      aria-labelledby="calc-results-title"
+      role="region"
+    >
+      <h2 id="calc-results-title" class="m-0 text-h3">
+        {{ 'CALCULATOR.RESULT.TITLE' | translate: { years: config.LIFESPAN_YEARS } }}
+      </h2>
+
+      @if (result(); as r) {
+        <div class="grid gap-6 sm:grid-cols-2" aria-live="polite" data-testid="calc-headline">
+          <div class="flex flex-col gap-1" data-testid="calc-savings">
+            @if (r.savings > 0) {
+              <p class="m-0 text-sm font-semibold">
+                {{ 'CALCULATOR.RESULT.SAVINGS_LABEL' | translate }}
+              </p>
+              <p class="m-0 font-brand text-5xl font-semibold text-sunny sm:text-6xl">
+                {{ 'CALCULATOR.RESULT.AMOUNT' | translate: { amount: format(r.savings) } }}
+              </p>
+            } @else {
+              <p class="m-0 text-lg font-bold">
+                {{ 'CALCULATOR.RESULT.NO_SAVINGS' | translate: { years: config.LIFESPAN_YEARS } }}
+              </p>
+            }
+          </div>
+          <div class="flex flex-col gap-1" data-testid="calc-items">
+            <p class="m-0 text-sm font-semibold">
+              {{ 'CALCULATOR.RESULT.ITEMS_AVOIDED.LABEL' | translate }}
+            </p>
+            <p class="m-0 flex flex-wrap items-baseline gap-x-2">
+              <span class="font-brand text-5xl font-semibold text-mint sm:text-6xl">{{
+                format(r.itemsAvoided)
+              }}</span
+              >&ngsp;<span class="text-lg font-bold">{{ itemsAvoidedKey() | translate }}</span>
+            </p>
+          </div>
+        </div>
+
+        @if (bars(); as b) {
+          <ul class="m-0 flex list-none flex-col gap-4 p-0">
+            <li class="flex flex-col gap-1.5">
+              <div class="flex justify-between gap-4 text-sm font-semibold">
+                <span>{{ 'CALCULATOR.RESULT.DISPOSABLE_COST' | translate }}</span>
+                <span class="font-brand">{{
+                  'CALCULATOR.RESULT.AMOUNT' | translate: { amount: format(r.disposableCost) }
+                }}</span>
+              </div>
+              <div class="h-4 overflow-hidden rounded-pill bg-blush/15" aria-hidden="true">
+                <div
+                  class="h-full rounded-pill bg-coral transition-[width]"
+                  [style.width.%]="b.disposable"
+                ></div>
+              </div>
+            </li>
+            <li class="flex flex-col gap-1.5">
+              <div class="flex justify-between gap-4 text-sm font-semibold">
+                <span>{{ 'CALCULATOR.RESULT.CIKLONI_COST' | translate }}</span>
+                <span class="font-brand">{{
+                  'CALCULATOR.RESULT.AMOUNT' | translate: { amount: format(r.cikloniCost) }
+                }}</span>
+              </div>
+              <div class="h-4 overflow-hidden rounded-pill bg-blush/15" aria-hidden="true">
+                <div
+                  class="h-full rounded-pill bg-mint transition-[width]"
+                  [style.width.%]="b.cikloni"
+                ></div>
+              </div>
+            </li>
+          </ul>
+        }
+      } @else {
+        <p class="m-0 font-semibold" data-testid="calc-invalid">
+          {{ 'CALCULATOR.RESULT.INVALID' | translate }}
+        </p>
+      }
+
+      <div class="flex flex-col gap-1.5 border-t border-blush/20 pt-5 text-sm">
+        <p class="m-0 font-bold">{{ 'CALCULATOR.ASSUMPTIONS.ESTIMATE' | translate }}</p>
+        <ul class="m-0 flex list-disc flex-col gap-1 pl-5">
+          <li>
+            {{ 'CALCULATOR.ASSUMPTIONS.CYCLES' | translate: { cycles: config.CYCLES_PER_YEAR } }}
+          </li>
+          <li>
+            {{
+              'CALCULATOR.ASSUMPTIONS.PAIRS'
+                | translate: { pairs: config.PAIRS_NEEDED, price: format(config.PAIR_PRICE_GEL) }
+            }}
+          </li>
+          <li>
+            {{ 'CALCULATOR.ASSUMPTIONS.LIFESPAN' | translate: { years: config.LIFESPAN_YEARS } }}
+          </li>
+        </ul>
+      </div>
+
+      <a
+        routerLink="/"
+        fragment="shop"
+        class="inline-flex min-h-13 items-center justify-center self-start rounded-pill bg-blush px-7 font-bold text-plum no-underline"
+        >{{ 'CALCULATOR.SHOP_NOW' | translate }}</a
+      >
+    </div>
+  </div>
+</section>

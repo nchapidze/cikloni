@@ -16,6 +16,11 @@ export const routes: Routes = [
         title: 'Cikloni',
         loadComponent: () => import('./pages/product/product').then((m) => m.ProductPage),
       },
+      {
+        path: 'calculator',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/calculator/calculator').then((m) => m.CalculatorPage),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

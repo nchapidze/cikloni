@@ -222,5 +222,59 @@
       "TITLE": "Product not found",
       "BACK": "Back to the home page"
     }
+  },
+  "CALCULATOR": {
+    "TITLE": "Savings calculator",
+    "SUBTITLE": "See how much you could save, and how much waste you could avoid, by switching to Cikloni.",
+    "FORM_LABEL": "Your current period products",
+    "PRODUCT": {
+      "LABEL": "What do you use now?",
+      "OPTIONS": {
+        "PADS": "Pads",
+        "TAMPONS": "Tampons",
+        "BOTH": "Both"
+      }
+    },
+    "PER_DAY": {
+      "LABEL": "Products per day"
+    },
+    "DAYS": {
+      "LABEL": "Period length (days)"
+    },
+    "PACK_PRICE": {
+      "LABEL": "Pack price (₾)",
+      "ERROR": "Enter a price of 0 or more."
+    },
+    "PACK_SIZE": {
+      "LABEL": "Pieces per pack",
+      "ERROR": "Enter at least 1 piece."
+    },
+    "RESULT": {
+      "TITLE": "Your estimate over {{years}} years",
+      "SAVINGS_LABEL": "You could save about",
+      "AMOUNT": "{{amount}} ₾",
+      "NO_SAVINGS": "With your numbers, Cikloni won't save you money over {{years}} years, but it's still kinder to the planet and more comfortable.",
+      "ITEMS_AVOIDED": {
+        "LABEL": "Kept out of the trash",
+        "PADS": "pads",
+        "TAMPONS": "tampons",
+        "BOTH": "pads and tampons"
+      },
+      "DISPOSABLE_COST": "Disposables",
+      "CIKLONI_COST": "Cikloni",
+      "INVALID": "Check the highlighted fields to see your estimate."
+    },
+    "ASSUMPTIONS": {
+      "ESTIMATE": "This is an estimate. Your actual savings depend on your cycle and the prices you pay.",
+      "CYCLES": "{{cycles}} cycles a year",
+      "PAIRS": "{{pairs}} pairs of Cikloni underwear at {{price}} ₾ each",
+      "LIFESPAN": "Each pair lasts about {{years}} years with proper care"
+    },
+    "SHOP_NOW": "Shop now",
+    "TEASER": {
+      "TITLE": "How much could you save?",
+      "TEXT": "Enter what you spend on pads or tampons and see what changes when you switch to Cikloni.",
+      "CTA": "Calculate your savings"
+    }
   }
 }
