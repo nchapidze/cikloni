@@ -109,4 +109,29 @@
   summary::-webkit-details-marker {
     display: none;
   }
+
+  /*
+   * Accordions slide open and closed. Progressive enhancement: browsers without
+   * ::details-content / interpolate-size just open instantly, as before.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    details {
+      interpolate-size: allow-keywords;
+    }
+
+    details::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      opacity: 0;
+      transition:
+        block-size 300ms ease,
+        opacity 300ms ease,
+        content-visibility 300ms allow-discrete;
+    }
+
+    details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
 }
