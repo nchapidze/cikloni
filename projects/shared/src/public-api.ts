@@ -12,6 +12,7 @@ export * from './lib/i18n/localized.pipe';
 export * from './lib/models/product.model';
 export * from './lib/models/product.palette';
 export * from './lib/models/checkout.config';
+export * from './lib/models/order.model';
 
 // Supabase setup
 export * from './lib/supabase/supabase.config';

@@ -26,6 +26,11 @@ export const routes: Routes = [
         loadComponent: () => import('./orders/orders').then((m) => m.AdminOrdersPage),
       },
       {
+        path: 'orders/:id',
+        title: 'შეკვეთა · Cikloni ადმინი',
+        loadComponent: () => import('./orders/order-details').then((m) => m.AdminOrderDetailsPage),
+      },
+      {
         path: 'products',
         title: 'პროდუქტები · Cikloni ადმინი',
         loadComponent: () => import('./products/products').then((m) => m.AdminProductsPage),
