@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LogoMark } from '@cikloni/shared';
+import { CONTACT_DETAILS } from '../../core/contact/contact.config';
 
 interface FooterItem {
   label: string;
@@ -34,16 +35,17 @@ export class Footer {
     {
       title: 'FOOTER.INFO.TITLE',
       items: [
-        { label: 'FOOTER.INFO.DELIVERY' },
-        { label: 'FOOTER.INFO.RETURNS' },
-        { label: 'FOOTER.INFO.PRIVACY' },
+        { label: 'FOOTER.INFO.DELIVERY', route: '/delivery' },
+        { label: 'FOOTER.INFO.RETURNS', route: '/returns' },
+        { label: 'FOOTER.INFO.PRIVACY', route: '/privacy' },
+        { label: 'FOOTER.INFO.TERMS', route: '/terms' },
       ],
     },
     {
       title: 'FOOTER.CONTACT.TITLE',
       items: [
-        { label: 'FOOTER.CONTACT.INSTAGRAM', href: 'https://www.instagram.com/cikloni.ge/' },
-        { label: 'FOOTER.CONTACT.DETAILS' },
+        { label: 'FOOTER.CONTACT.INSTAGRAM', href: CONTACT_DETAILS.instagram.url },
+        { label: 'FOOTER.CONTACT.DETAILS', route: '/contact' },
       ],
     },
   ];

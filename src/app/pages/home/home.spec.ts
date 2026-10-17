@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { mapRows, provideCatalogTesting, SEED_ROWS } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
+import { CALCULATOR_CONFIG } from '../../core/calculator/calculator.config';
 import { LanguageService } from '../../core/i18n/language.service';
 import { Product } from '@cikloni/shared';
 import { Home } from './home';
@@ -150,6 +151,14 @@ describe('Home', () => {
     expect(items[0].querySelector('summary')?.textContent).toContain(
       'რამდენ ხანს შეიძლება ტარება?',
     );
+  });
+
+  it('fills in the FAQ answers and links the delivery answer to /delivery', async () => {
+    const el = await render();
+    const items = [...el.querySelectorAll('section#faq details')];
+    expect(items.every((d) => !d.textContent?.includes('[პასუხი]'))).toBe(true);
+    expect(items[2].textContent).toContain(`${CALCULATOR_CONFIG.PAIRS_NEEDED} წყვილი`);
+    expect(items[3].querySelector('a')?.getAttribute('href')).toBe('/delivery');
   });
 
   it('renders the about section with the large logo', async () => {

@@ -129,19 +129,20 @@
     "ITEMS": {
       "WEAR_TIME": {
         "QUESTION": "How long can I wear them?",
-        "ANSWER": "[answer]"
+        "ANSWER": "You can wear one pair for up to [12] hours, depending on your flow. On heavy days you may want to change more often, and for nights choose a heavy-absorbency pair."
       },
       "WASHING": {
         "QUESTION": "How do I wash them?",
-        "ANSWER": "[answer]"
+        "ANSWER": "After wearing, rinse in cold water until the water runs clear. Then wash by hand or in the machine on a cold cycle [up to 30°C]. Skip fabric softener and bleach. Hang to dry, no tumble dryer."
       },
       "PAIRS": {
         "QUESTION": "How many pairs do I need for one cycle?",
-        "ANSWER": "[answer]"
+        "ANSWER": "Usually {{pairs}} pairs are enough for one cycle: some to wear while the others wash and dry. If you have a heavy cycle or can’t wash often, get a few more."
       },
       "DELIVERY": {
         "QUESTION": "How does delivery work?",
-        "ANSWER": "[answer]"
+        "ANSWER": "A courier brings your order anywhere in Georgia, in discreet packaging. You pay when you receive it.",
+        "LINK": "Delivery times and fees"
       }
     }
   },
@@ -170,7 +171,8 @@
       "TITLE": "Information",
       "DELIVERY": "Delivery",
       "RETURNS": "Returns policy",
-      "PRIVACY": "Privacy policy"
+      "PRIVACY": "Privacy policy",
+      "TERMS": "Terms of sale"
     },
     "CONTACT": {
       "TITLE": "Contact",
@@ -406,5 +408,165 @@
       "DISCREET": "Your order arrives in discreet packaging."
     },
     "CONTINUE": "Back to the shop"
+  },
+  "INFO_PAGE": {
+    "QUESTIONS": "Have a question? We’re happy to help.",
+    "CONTACT_US": "Contact us"
+  },
+  "DELIVERY": {
+    "TITLE": "Delivery",
+    "INTRO": "A courier brings your order anywhere in Georgia. Here’s what delivery costs and how long it takes.",
+    "AREAS": {
+      "TITLE": "Where and how fast",
+      "TBILISI": "Any address in Tbilisi [confirm: are the suburbs included?].",
+      "REGIONS": "Other towns and villages across Georgia [confirm any exceptions].",
+      "TIME": "Time",
+      "FEE": "Fee",
+      "NOTE": "Times count from when we confirm your order. On weekends and public holidays we [do / don’t] deliver."
+    },
+    "HOW": {
+      "TITLE": "How delivery works",
+      "CONFIRM": "After you order, we call you to confirm the details.",
+      "COURIER": "The courier contacts you before arriving.",
+      "MISSED": "If the courier can’t reach you or you’re not there, we’ll agree on a new time [confirm: is a second delivery attempt free?]."
+    },
+    "PACKAGING": {
+      "TITLE": "Discreet packaging",
+      "TEXT": "Your order comes in plain, opaque packaging, so nobody can tell what’s inside [confirm: is the logo shown on the package?]."
+    }
+  },
+  "RETURNS": {
+    "TITLE": "Returns policy",
+    "INTRO": "We want you to be happy with your order. Underwear is a hygiene product, so we can only accept returns under a few conditions.",
+    "UPDATED": "Last updated: [date]",
+    "CONDITIONS": {
+      "TITLE": "What can be returned",
+      "UNOPENED": "The item is unopened and in its original packaging.",
+      "UNUSED": "The item hasn’t been tried on, washed or worn.",
+      "WINDOW": "You ask for the return within [14] days of receiving your order.",
+      "HYGIENE": "For hygiene reasons, we can’t take back underwear that has been opened or tried on. This keeps every customer safe."
+    },
+    "WRONG_ITEM": {
+      "TITLE": "If something went wrong",
+      "TEXT": "If you got the wrong size or color, or the item is damaged, message us within [3] days with a photo. We’ll replace it or refund you, even if you’ve already opened the package."
+    },
+    "HOW": {
+      "TITLE": "How to request a return",
+      "STEPS": {
+        "CONTACT": "Contact us by phone, email or Instagram and send us your order number.",
+        "DETAILS": "Tell us which item you’d like to return and why.",
+        "HANDOVER": "We’ll agree on how you hand the item back [a courier picks it up / you send it].",
+        "REFUND": "Once we receive and check the item, we refund you."
+      },
+      "SHIPPING": "Return shipping is paid by [the customer / Cikloni]. If the mistake was ours, we always cover it."
+    },
+    "REFUND": {
+      "TITLE": "Refunds",
+      "TEXT": "We refund you [by bank transfer to your account] within [5] business days of receiving the item.",
+      "DELIVERY_FEE": "The original delivery fee [is / isn’t] refunded, unless the mistake was ours."
+    }
+  },
+  "PRIVACY": {
+    "TITLE": "Privacy policy",
+    "INTRO": "We only need your data to get your order to you. Here’s a simple explanation of what we collect and why.",
+    "UPDATED": "Last updated: [date]",
+    "WHO": {
+      "TITLE": "Who we are",
+      "TEXT": "The Cikloni online shop is run by [company or sole trader name], ID code [code], address: [legal address]. We are responsible for your data."
+    },
+    "COLLECT": {
+      "TITLE": "What we collect",
+      "INTRO": "When you place an order, you share:",
+      "NAME": "your first and last name",
+      "PHONE": "your mobile number",
+      "EMAIL": "your email, if you give it",
+      "ADDRESS": "your delivery address: city or village, street, building and apartment",
+      "NOTES": "a note for the courier, if you write one",
+      "ORDER": "We also keep the order details: what you bought, the price and when you ordered.",
+      "NO_CARDS": "We don’t collect or store card details."
+    },
+    "WHY": {
+      "TITLE": "Why we need it",
+      "CONFIRM": "To confirm your order and contact you about it.",
+      "DELIVER": "To deliver your order: we pass your name, phone and address to the courier.",
+      "SUPPORT": "To handle returns or any other problem.",
+      "LAW": "To keep our accounts and meet other legal obligations.",
+      "NO_SELLING": "We never sell your data or use it for advertising. We only send you news if you subscribe yourself."
+    },
+    "STORAGE": {
+      "TITLE": "Where it’s stored",
+      "TEXT": "Your data is kept in a secure database provided by Supabase (servers in [region, e.g. the EU]). Only our team can access it.",
+      "SHARED": "We share what’s needed for delivery with our courier company, [courier name]. We don’t pass your data to anyone else unless the law requires it.",
+      "BROWSER": "Your cart and language choice are saved only in your browser and are never sent to us. We don’t use advertising cookies."
+    },
+    "RETENTION": {
+      "TITLE": "How long we keep it",
+      "TEXT": "We keep order data for [X years] from the order date, because we need it for accounting and returns. After that, we delete it."
+    },
+    "RIGHTS": {
+      "TITLE": "Your rights and deleting your data",
+      "TEXT": "At any time you can ask what data we hold about you, and ask us to correct or delete it.",
+      "HOW": "Just contact us with the phone number you used to order. We’ll handle your request within [10] days. If the law requires us to keep some of it, we’ll tell you what and for how long.",
+      "COMPLAINT": "If you think we’re handling your data wrongly, you can contact the Personal Data Protection Service of Georgia."
+    }
+  },
+  "TERMS": {
+    "TITLE": "Terms of sale",
+    "INTRO": "These terms apply to every order placed on cikloni.ge. By sending an order, you agree to them.",
+    "UPDATED": "Last updated: [date]",
+    "SELLER": {
+      "TITLE": "Seller",
+      "TEXT": "[Company or sole trader name], ID code [code], address: [legal address]."
+    },
+    "PRICES": {
+      "TITLE": "Prices",
+      "GEL": "All prices are in Georgian lari (₾).",
+      "VAT": "Prices [include / don’t include] VAT.",
+      "DELIVERY": "The delivery fee is added separately and shown on the checkout page before you confirm.",
+      "FIXED": "Your order’s price is fixed when you send it. If a price changes later, your order isn’t affected."
+    },
+    "ORDER": {
+      "TITLE": "Orders and confirmation",
+      "NUMBER": "You see your order number as soon as you send the order.",
+      "CONFIRMATION": "Our team calls you to confirm the order. The order is final once it’s confirmed.",
+      "UNAVAILABLE": "If an item is out of stock or a price was shown by mistake, we’ll tell you and you can change or cancel your order.",
+      "CANCEL": "You can cancel your order for free [before it’s handed to the courier]."
+    },
+    "PAYMENT": {
+      "TITLE": "Payment methods",
+      "INTRO": "Right now you can pay by:"
+    },
+    "DELIVERY_RETURNS": {
+      "TITLE": "Delivery and returns",
+      "TEXT": "Delivery times, fees and the returns conditions are on their own pages:"
+    },
+    "CHANGES": {
+      "TITLE": "Changes to these terms",
+      "TEXT": "We may update these terms from time to time. Your order is covered by the terms that applied when you sent it.",
+      "LAW": "These terms are governed by the laws of Georgia."
+    }
+  },
+  "CONTACT": {
+    "TITLE": "Contact",
+    "INTRO": "Have a question about an order, sizing or care? Message or call us, we’re happy to help.",
+    "INSTAGRAM": {
+      "LABEL": "Instagram"
+    },
+    "PHONE": {
+      "LABEL": "Phone",
+      "PLACEHOLDER": "[phone number]"
+    },
+    "EMAIL": {
+      "LABEL": "Email",
+      "PLACEHOLDER": "[email]"
+    },
+    "ADDRESS": {
+      "LABEL": "Address",
+      "VALUE": "[company name], [street, city]"
+    },
+    "HOURS": {
+      "LABEL": "Opening hours",
+      "VALUE": "[Mon–Fri, 10:00–19:00]"
+    }
   }
 }

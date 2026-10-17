@@ -41,6 +41,31 @@ export const routes: Routes = [
         title: 'Cikloni',
         loadComponent: () => import('./pages/calculator/calculator').then((m) => m.CalculatorPage),
       },
+      {
+        path: 'delivery',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/delivery/delivery').then((m) => m.DeliveryPage),
+      },
+      {
+        path: 'returns',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/returns/returns').then((m) => m.ReturnsPage),
+      },
+      {
+        path: 'privacy',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/privacy/privacy').then((m) => m.PrivacyPage),
+      },
+      {
+        path: 'terms',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/terms/terms').then((m) => m.TermsPage),
+      },
+      {
+        path: 'contact',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/contact/contact').then((m) => m.ContactPage),
+      },
     ],
   },
   { path: '**', redirectTo: '' },
