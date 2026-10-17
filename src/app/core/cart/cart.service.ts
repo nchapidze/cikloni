@@ -71,6 +71,11 @@ export class CartService {
     this.commit((items) => items.filter((item) => item.id !== id));
   }
 
+  /** Empties the cart, e.g. after an order is placed. */
+  clear(): void {
+    this.commit(() => []);
+  }
+
   /** Sets a line's quantity; zero or less removes the line. */
   updateQuantity(id: string, quantity: number): void {
     if (!Number.isInteger(quantity)) return;

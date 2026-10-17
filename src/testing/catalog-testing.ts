@@ -15,9 +15,19 @@ const CARE: LocalizedText = {
   en: "Rinse in cold water, machine wash on a cold cycle and air dry. Don't use fabric softener or a tumble dryer.",
 };
 
-function variants(colorIds: string[]): ProductRow['product_variants'] {
+/** A stable fake uuid per variant, e.g. for "floral-bikini", "coral", "M". */
+export function variantId(slug: string, colorId: string, size: string): string {
+  const hex = [...`${slug}:${colorId}:${size}`]
+    .reduce((hash, char) => (Math.imul(hash, 31) + char.charCodeAt(0)) >>> 0, 7)
+    .toString(16)
+    .padStart(8, '0');
+  return `${hex}-0000-4000-8000-000000000000`;
+}
+
+function variants(slug: string, colorIds: string[]): ProductRow['product_variants'] {
   return colorIds.flatMap((id) =>
     SIZES.map((size) => ({
+      id: variantId(slug, id, size),
       color_id: id,
       color_name: COLORS[id].name,
       color_hex: COLORS[id].hex,
@@ -37,7 +47,7 @@ function row(slug: string, fields: Partial<ProductRow>): ProductRow {
     price_gel: null,
     absorbency: 'light',
     is_bestseller: true,
-    product_variants: variants(['coral', 'lilac', 'orange']),
+    product_variants: variants(slug, ['coral', 'lilac', 'orange']),
     product_images: [],
     ...fields,
   };
@@ -52,7 +62,7 @@ export const SEED_ROWS: readonly ProductRow[] = [
       en: 'A colorful floral bikini with a multi-layer absorbent lining. [fabric composition, number of layers, certificates]',
     },
     absorbency: 'medium',
-    product_variants: variants(['coral', 'lilac', 'orange', 'mint']),
+    product_variants: variants('floral-bikini', ['coral', 'lilac', 'orange', 'mint']),
   }),
   row('seamless-hipster', { name: { ka: 'უნაკერო ჰიპსტერი', en: 'Seamless hipster' } }),
   row('colorful-boxer', {

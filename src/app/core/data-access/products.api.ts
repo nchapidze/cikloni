@@ -25,6 +25,7 @@ export interface ProductRow {
   absorbency: AbsorbencyLevel;
   is_bestseller: boolean;
   product_variants: {
+    id: string;
     color_id: string;
     color_name: LocalizedText;
     color_hex: string;
@@ -40,7 +41,7 @@ export interface ProductRow {
 
 const PRODUCT_SELECT = `
   id, slug, name, description, care, price_gel, absorbency, is_bestseller,
-  product_variants (color_id, color_name, color_hex, size, stock),
+  product_variants (id, color_id, color_name, color_hex, size, stock),
   product_images (color_id, storage_path, sort_order)
 `;
 
@@ -53,7 +54,7 @@ export function toProduct(row: ProductRow, imageUrl: (path: string) => string): 
   const variants: ProductVariant[] = [];
   for (const v of row.product_variants) {
     if (!isSize(v.size)) continue;
-    variants.push({ colorId: v.color_id, size: v.size, stock: v.stock });
+    variants.push({ id: v.id, colorId: v.color_id, size: v.size, stock: v.stock });
     if (!colors.has(v.color_id)) {
       colors.set(v.color_id, {
         id: v.color_id,

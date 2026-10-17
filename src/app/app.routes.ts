@@ -22,6 +22,16 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/cart/cart').then((m) => m.CartPage),
       },
       {
+        path: 'checkout',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/checkout/checkout').then((m) => m.CheckoutPage),
+      },
+      {
+        path: 'order/:orderNumber',
+        title: 'Cikloni',
+        loadComponent: () => import('./pages/order/order').then((m) => m.OrderPage),
+      },
+      {
         path: 'calculator',
         title: 'Cikloni',
         loadComponent: () => import('./pages/calculator/calculator').then((m) => m.CalculatorPage),

@@ -278,5 +278,103 @@
       "TEXT": "Find a color and size you love.",
       "SHOP": "Go to the shop"
     }
+  },
+  "CHECKOUT": {
+    "TITLE": "Checkout",
+    "GUEST_NOTE": "No account needed.",
+    "FORM_LABEL": "Delivery and payment details",
+    "CONTACT": {
+      "TITLE": "Contact details"
+    },
+    "NAME": {
+      "LABEL": "Full name"
+    },
+    "PHONE": {
+      "LABEL": "Mobile number",
+      "HINT": "e.g. 555 12 34 56"
+    },
+    "EMAIL": {
+      "LABEL": "Email (optional)"
+    },
+    "DELIVERY": {
+      "TITLE": "Delivery",
+      "METHODS": {
+        "TBILISI": {
+          "NAME": "Tbilisi",
+          "TIME": "1–2 business days"
+        },
+        "REGIONS": {
+          "NAME": "Regions",
+          "TIME": "2–4 business days"
+        }
+      }
+    },
+    "CITY": {
+      "LABEL": "City or village"
+    },
+    "ADDRESS": {
+      "LABEL": "Address",
+      "HINT": "Street, building, entrance, apartment"
+    },
+    "NOTES": {
+      "LABEL": "Note for the courier (optional)"
+    },
+    "PAYMENT": {
+      "TITLE": "Payment",
+      "METHODS": {
+        "CASH": {
+          "NAME": "Cash on delivery",
+          "TEXT": "Pay the courier when you receive your order."
+        }
+      }
+    },
+    "SUMMARY": {
+      "TITLE": "Your order",
+      "QUANTITY": "× {{quantity}}",
+      "SUBTOTAL": "Products",
+      "DELIVERY": "Delivery — {{method}}",
+      "TOTAL": "Total"
+    },
+    "SUBMIT": "Place order",
+    "SUBMITTING": "Sending…",
+    "ERRORS": {
+      "REQUIRED": "Please fill in this field.",
+      "PHONE": "Enter a Georgian mobile number, e.g. 555 12 34 56.",
+      "EMAIL": "Enter a valid email address.",
+      "TOO_LONG": "This text is too long.",
+      "FORM": "Please fix the highlighted fields.",
+      "GENERIC": "We couldn't send your order. Please try again.",
+      "NETWORK": "We couldn't reach the server. Check your internet connection and try again."
+    },
+    "OUT_OF_STOCK": {
+      "TITLE": "Some items are no longer in stock in the quantity you chose:",
+      "ITEM": "{{item}} — {{available}} in stock",
+      "UNAVAILABLE": "{{item}} — currently unavailable",
+      "FIX": "Update cart"
+    },
+    "EMPTY": {
+      "TITLE": "Your cart is empty",
+      "TEXT": "Add some products to check out.",
+      "SHOP": "Go to the shop"
+    }
+  },
+  "ORDER": {
+    "TITLE": "Thank you for your order!",
+    "NUMBER": "Order number",
+    "DELIVERY_TITLE": "Delivery details",
+    "NEXT": {
+      "TITLE": "What happens next?",
+      "CONFIRM": "Our team will contact you to confirm the order.",
+      "DELIVERY": {
+        "TBILISI": "A courier will deliver your order within 1–2 business days.",
+        "REGIONS": "A courier will deliver your order within 2–4 business days.",
+        "DEFAULT": "A courier will deliver your order to the address you gave."
+      },
+      "PAYMENT": {
+        "CASH": "Pay the courier when you receive your order."
+      },
+      "DISCREET": "Your order arrives in discreet packaging."
+    },
+    "CONTINUE": "Back to the shop"
   }
 }

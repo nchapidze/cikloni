@@ -24,6 +24,8 @@ export interface ProductColor {
 }
 
 export interface ProductVariant {
+  /** The only thing checkout sends for a line, with its quantity. */
+  id: string;
   colorId: ColorId;
   size: Size;
   /** For display only; the server checks stock when an order is placed. */
@@ -99,7 +101,15 @@ export function productImage(product: Product, colorId: ColorId): ProductImage |
   );
 }
 
+export function findVariant(
+  product: Product,
+  colorId: ColorId,
+  size: Size,
+): ProductVariant | undefined {
+  return product.variants.find((v) => v.colorId === colorId && v.size === size);
+}
+
 /** True when the product is sold in this color and size. */
 export function hasVariant(product: Product, colorId: ColorId, size: Size): boolean {
-  return product.variants.some((v) => v.colorId === colorId && v.size === size);
+  return !!findVariant(product, colorId, size);
 }

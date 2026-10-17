@@ -31,6 +31,7 @@ describe('toProduct', () => {
     const product = map({
       product_variants: [
         {
+          id: 'v-teal-1',
           color_id: 'teal',
           color_name: { ka: 'ფირუზი' },
           color_hex: '#008080',
@@ -38,6 +39,7 @@ describe('toProduct', () => {
           stock: 1,
         },
         {
+          id: 'v-mint-2',
           color_id: 'mint',
           color_name: { ka: 'პიტნისფერი' },
           color_hex: '#2aa79b',
@@ -45,6 +47,7 @@ describe('toProduct', () => {
           stock: 1,
         },
         {
+          id: 'v-coral-3',
           color_id: 'coral',
           color_name: { ka: 'ვარდისფერი' },
           color_hex: '#e8546b',
