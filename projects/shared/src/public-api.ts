@@ -1,6 +1,7 @@
 /*
  * @cikloni/shared: code used by both the shop and the admin app. Admin-only code is in
- * @cikloni/shared/admin and spec helpers in @cikloni/shared/testing. Apps import only from
+ * @cikloni/shared/admin, form controls in @cikloni/shared/forms and spec helpers in
+ * @cikloni/shared/testing. Apps import only from
  * these entry points, never from each other.
  */
 
@@ -13,6 +14,7 @@ export * from './lib/models/product.model';
 export * from './lib/models/product.palette';
 export * from './lib/models/checkout.config';
 export * from './lib/models/order.model';
+export * from './lib/models/admin-product.model';
 
 // Supabase setup
 export * from './lib/supabase/supabase.config';

@@ -11,6 +11,7 @@ import {
 import { LogoMark } from '@cikloni/shared';
 import { AuthService } from '@cikloni/shared/admin';
 import { ADMIN_LOGIN_PATH } from '../admin.guards';
+import { ToastOutlet } from '../ui/toast/toast-outlet';
 
 interface NavItem {
   path: string;
@@ -28,7 +29,7 @@ const NAV_ITEMS: NavItem[] = [
 /** Admin shell: sidebar (a top bar on phones) with the sections and logout, then the page. */
 @Component({
   selector: 'app-admin-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideAngularModule, LogoMark],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideAngularModule, LogoMark, ToastOutlet],
   host: { class: 'flex min-h-screen flex-col md:flex-row' },
   template: `
     <aside
@@ -74,6 +75,8 @@ const NAV_ITEMS: NavItem[] = [
     <main class="min-w-0 flex-1 p-4 sm:p-6 md:p-8">
       <router-outlet />
     </main>
+
+    <app-toast-outlet />
   `,
 })
 export class AdminLayout {

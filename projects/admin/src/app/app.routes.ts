@@ -35,6 +35,16 @@ export const routes: Routes = [
         title: 'პროდუქტები · Cikloni ადმინი',
         loadComponent: () => import('./products/products').then((m) => m.AdminProductsPage),
       },
+      {
+        path: 'products/new',
+        title: 'ახალი პროდუქტი · Cikloni ადმინი',
+        loadComponent: () => import('./products/product-edit').then((m) => m.AdminProductEditPage),
+      },
+      {
+        path: 'products/:id',
+        title: 'პროდუქტი · Cikloni ადმინი',
+        loadComponent: () => import('./products/product-edit').then((m) => m.AdminProductEditPage),
+      },
       { path: '**', redirectTo: '' },
     ],
   },

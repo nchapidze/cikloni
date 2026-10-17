@@ -18,6 +18,7 @@
     "paths": {
       "@cikloni/shared": ["./projects/shared/src/public-api.ts"],
       "@cikloni/shared/admin": ["./projects/shared/src/admin.ts"],
+      "@cikloni/shared/forms": ["./projects/shared/src/forms.ts"],
       "@cikloni/shared/testing": ["./projects/shared/src/testing.ts"]
     }
   },

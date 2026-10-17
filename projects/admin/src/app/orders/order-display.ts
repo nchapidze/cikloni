@@ -1,5 +1,7 @@
 import { OrderDetails, OrderStatus } from '@cikloni/shared';
 
+export { formatDateTime, formatGel } from '../ui/format';
+
 export const STATUS_LABELS: Record<OrderStatus, string> = {
   new: 'ახალი',
   confirmed: 'დადასტურებული',
@@ -30,19 +32,6 @@ const PAYMENT_STATUS_LABELS: Record<string, string> = {
 export const deliveryLabel = (id: string) => DELIVERY_LABELS[id] ?? id;
 export const paymentLabel = (id: string) => PAYMENT_LABELS[id] ?? id;
 export const paymentStatusLabel = (id: string) => PAYMENT_STATUS_LABELS[id] ?? id;
-
-const gel = new Intl.NumberFormat('ka-GE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const dateTime = new Intl.DateTimeFormat('ka-GE', {
-  dateStyle: 'medium',
-  timeStyle: 'short',
-  timeZone: 'Asia/Tbilisi',
-});
-
-/** "39,90 ₾" */
-export const formatGel = (amount: number) => `${gel.format(amount)} ₾`;
-
-/** Tbilisi time, wherever the admin is. */
-export const formatDateTime = (date: Date) => dateTime.format(date);
 
 /** What the courier needs: name, phone and address, one per line. */
 export function courierAddress(order: OrderDetails): string {
