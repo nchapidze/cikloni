@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { provideCatalogTesting } from '../../../testing/catalog-testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { App } from '../../app';
 import { routes } from '../../app.routes';
@@ -16,7 +17,11 @@ describe('Cart drawer', () => {
     vi.stubGlobal('matchMedia', (query: string) => ({ matches: wide, media: query }));
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes, withComponentInputBinding()), provideTranslateTesting()],
+      providers: [
+        provideRouter(routes, withComponentInputBinding()),
+        provideTranslateTesting(),
+        provideCatalogTesting(),
+      ],
     }).compileComponents();
     await firstValueFrom(TestBed.inject(LanguageService).init());
   });

@@ -2,20 +2,33 @@ import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { mapRows, provideCatalogTesting, SEED_ROWS } from '../../../testing/catalog-testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { LanguageService } from '../../core/i18n/language.service';
+import { Product } from '../../core/products/product.model';
 import { Home } from './home';
 
 describe('Home', () => {
-  async function render(): Promise<HTMLElement> {
+  async function render(
+    listProducts?: () => Promise<Product[]>,
+    { stable = true } = {},
+  ): Promise<HTMLElement> {
     localStorage.clear();
     TestBed.configureTestingModule({
       imports: [Home],
-      providers: [provideRouter([]), provideTranslateTesting()],
+      providers: [
+        provideRouter([]),
+        provideTranslateTesting(),
+        provideCatalogTesting(listProducts),
+      ],
     });
     await firstValueFrom(TestBed.inject(LanguageService).init());
     const fixture = TestBed.createComponent(Home);
-    await fixture.whenStable();
+    if (stable) {
+      await fixture.whenStable();
+    } else {
+      fixture.detectChanges();
+    }
     return fixture.nativeElement as HTMLElement;
   }
 
@@ -65,6 +78,53 @@ describe('Home', () => {
     // Floral bikini comes in four colors; the others in three.
     expect(first.querySelectorAll('.size-4')).toHaveLength(4);
     expect(links[1].querySelectorAll('.size-4')).toHaveLength(3);
+  });
+
+  it('gives the product cards alternating tints', async () => {
+    const el = await render();
+    const tints = [...el.querySelectorAll<HTMLElement>('app-product-card a > div:first-child')].map(
+      (div) => div.style.backgroundColor,
+    );
+    expect(tints).toEqual([
+      'var(--color-coral-soft)',
+      'var(--color-lilac)',
+      'var(--color-sunny)',
+      'var(--color-mint)',
+    ]);
+  });
+
+  it('only lists bestsellers', async () => {
+    const [first, ...rest] = SEED_ROWS;
+    const el = await render(async () => mapRows([{ ...first, is_bestseller: false }, ...rest]));
+    expect(el.querySelectorAll('app-product-card')).toHaveLength(3);
+  });
+
+  it('shows skeleton cards while products load', async () => {
+    // The request never settles, so don't wait for stability.
+    const el = await render(() => new Promise<Product[]>(() => undefined), { stable: false });
+    const shop = el.querySelector('section#shop')!;
+    expect(shop.getAttribute('aria-busy')).toBe('true');
+    expect(shop.querySelectorAll('[data-testid="product-skeleton"]')).toHaveLength(4);
+    expect(shop.querySelector('[role="status"]')?.textContent?.trim()).toBe(
+      'პროდუქტები იტვირთება…',
+    );
+  });
+
+  it('shows an error with a retry button when products fail to load', async () => {
+    const listProducts = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('offline'))
+      .mockResolvedValue(mapRows(SEED_ROWS));
+    const el = await render(listProducts);
+    const shop = el.querySelector('section#shop')!;
+    expect(shop.querySelector('[role="alert"]')).toBeTruthy();
+    expect(shop.querySelector('app-product-card')).toBeNull();
+
+    shop.querySelector<HTMLButtonElement>('[role="alert"] button')!.click();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(shop.querySelector('[role="alert"]')).toBeNull();
+    expect(shop.querySelectorAll('app-product-card')).toHaveLength(4);
   });
 
   it('renders the three how-it-works steps as an ordered list', async () => {

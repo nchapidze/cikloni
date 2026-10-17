@@ -1,6 +1,14 @@
 @let drawer = layout() === 'drawer';
 
-@if (lines().length) {
+@if (waiting()) {
+  <div [class]="drawer ? 'px-6 py-12' : 'py-12'" data-testid="cart-waiting">
+    @if (products.status() === 'error') {
+      <app-load-error (retry)="products.reload()" />
+    } @else {
+      <p class="m-0 text-center" role="status">{{ 'CATALOG.LOADING' | translate }}</p>
+    }
+  </div>
+} @else if (lines().length) {
   <div
     class="flex min-h-0 flex-1 flex-col"
     [class]="drawer ? '' : 'gap-8 md:flex-row md:items-start md:gap-12'"
@@ -13,18 +21,21 @@
       [attr.aria-label]="'CART.ITEMS_LABEL' | translate"
     >
       @for (line of lines(); track line.item.id) {
-        @let name = line.product.nameKey | translate;
-        @let colorName = line.color.nameKey | translate;
+        @let name = line.product.name | localized;
+        @let colorName = line.color.name | localized;
         @let description =
           'CART.LINE.DESCRIPTION' | translate: { name, color: colorName, size: line.item.size };
 
         <li class="flex gap-4 border-b border-border py-5" data-testid="cart-line">
-          <!-- TODO: replace with the product photo. -->
           <div
-            class="size-20 shrink-0 rounded-panel sm:size-24"
+            class="size-20 shrink-0 overflow-hidden rounded-panel sm:size-24"
             aria-hidden="true"
             [style.background-color]="line.color.soft"
-          ></div>
+          >
+            @if (line.image; as image) {
+              <img [src]="image.url" alt="" class="size-full object-cover" />
+            }
+          </div>
 
           <div class="flex min-w-0 flex-1 flex-col gap-3">
             <div class="flex items-start justify-between gap-2">
@@ -127,8 +138,8 @@
                 'CART.LINE.DESCRIPTION'
                 | translate
                   : {
-                      name: (item.nameKey | translate),
-                      color: (item.colorKey | translate),
+                      name: (item.name | localized),
+                      color: (item.color | localized),
                       size: item.size,
                     },
             }

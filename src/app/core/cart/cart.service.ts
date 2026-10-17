@@ -1,5 +1,5 @@
 import { DOCUMENT, DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
-import { ColorId, Size } from '../products/product.model';
+import { ColorId, Product, Size, hasVariant, isSize } from '../products/product.model';
 import { ProductService } from '../products/product.service';
 
 export interface CartItem {
@@ -22,6 +22,11 @@ function lineId({ slug, colorId, size }: CartItemOptions): string {
   return `${slug}:${colorId}:${size}`;
 }
 
+function isSold(item: CartItem, products: readonly Product[]): boolean {
+  const product = products.find((p) => p.slug === item.slug);
+  return !!product && hasVariant(product, item.colorId, item.size);
+}
+
 /**
  * Cart state, persisted in localStorage and kept in sync across tabs.
  * Display only: prices and stock are recalculated server-side when an order is created.
@@ -29,15 +34,19 @@ function lineId({ slug, colorId, size }: CartItemOptions): string {
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private readonly products = inject(ProductService);
-  private readonly _items = signal<readonly CartItem[]>(this.readStored());
+  private readonly stored = signal<readonly CartItem[]>(this.readStored());
 
-  readonly items = this._items.asReadonly();
-  readonly totalCount = computed(() => this._items().reduce((sum, item) => sum + item.quantity, 0));
+  /** Stored lines, minus any the catalog no longer sells once it has loaded. */
+  readonly items = computed(() => {
+    const products = this.products.loaded();
+    return products ? this.stored().filter((item) => isSold(item, products)) : this.stored();
+  });
+  readonly totalCount = computed(() => this.items().reduce((sum, item) => sum + item.quantity, 0));
 
   constructor() {
     const window = inject(DOCUMENT).defaultView;
     const onStorage = (event: StorageEvent) => {
-      if (event.key === CART_STORAGE_KEY || event.key === null) this._items.set(this.readStored());
+      if (event.key === CART_STORAGE_KEY || event.key === null) this.stored.set(this.readStored());
     };
     window?.addEventListener('storage', onStorage);
     inject(DestroyRef).onDestroy(() => window?.removeEventListener('storage', onStorage));
@@ -75,16 +84,20 @@ export class CartService {
     );
   }
 
+  /** Applies `update` to the visible lines, so saving also drops lines no longer sold. */
   private commit(update: (items: readonly CartItem[]) => readonly CartItem[]): void {
-    this._items.update(update);
+    this.stored.set(update(this.items()));
     try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this._items()));
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this.stored()));
     } catch {
       // Storage unavailable (private mode etc.); the cart just won't persist.
     }
   }
 
-  /** Restores saved lines, dropping anything malformed or no longer in the catalog. */
+  /**
+   * Restores saved lines, dropping malformed ones. The catalog loads asynchronously, so lines
+   * no longer sold are filtered out later, in `items`.
+   */
   private readStored(): CartItem[] {
     let parsed: unknown;
     try {
@@ -96,17 +109,16 @@ export class CartService {
 
     const lines = new Map<string, CartItem>();
     for (const raw of parsed as Partial<CartItem>[]) {
-      const product = typeof raw?.slug === 'string' && this.products.getBySlug(raw.slug);
       if (
-        !product ||
-        !product.colors.includes(raw.colorId as ColorId) ||
-        !product.sizes.includes(raw.size as Size) ||
+        typeof raw?.slug !== 'string' ||
+        typeof raw.colorId !== 'string' ||
+        !isSize(raw.size) ||
         !Number.isInteger(raw.quantity) ||
         raw.quantity! < 1
       ) {
         continue;
       }
-      const options = { slug: product.slug, colorId: raw.colorId!, size: raw.size! };
+      const options = { slug: raw.slug, colorId: raw.colorId, size: raw.size };
       const id = lineId(options);
       const quantity = Math.min(MAX_LINE_QUANTITY, (lines.get(id)?.quantity ?? 0) + raw.quantity!);
       lines.set(id, { ...options, id, quantity });

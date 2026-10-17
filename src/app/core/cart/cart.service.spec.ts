@@ -1,4 +1,6 @@
+import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideCatalogTesting } from '../../../testing/catalog-testing';
 import { CART_STORAGE_KEY, CartService, MAX_LINE_QUANTITY } from './cart.service';
 
 describe('CartService', () => {
@@ -6,9 +8,15 @@ describe('CartService', () => {
   const bikiniM = { slug: 'floral-bikini', colorId: 'coral', size: 'M' } as const;
   const bikiniL = { slug: 'floral-bikini', colorId: 'coral', size: 'L' } as const;
 
+  function newSession(): CartService {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({ providers: [provideCatalogTesting()] });
+    return TestBed.inject(CartService);
+  }
+
   beforeEach(() => {
     localStorage.clear();
-    cart = TestBed.inject(CartService);
+    cart = newSession();
   });
 
   it('starts empty', () => {
@@ -69,14 +77,13 @@ describe('CartService', () => {
     cart.addItem(bikiniM, 2);
     cart.addItem(bikiniL);
 
-    TestBed.resetTestingModule();
-    const restored = TestBed.inject(CartService);
+    const restored = newSession();
 
     expect(restored.items()).toEqual(cart.items());
     expect(restored.totalCount()).toBe(3);
   });
 
-  it('drops stored lines that are malformed or no longer sold', () => {
+  it('drops stored lines that are malformed or no longer sold', async () => {
     localStorage.setItem(
       CART_STORAGE_KEY,
       JSON.stringify([
@@ -89,18 +96,19 @@ describe('CartService', () => {
         null,
       ]),
     );
-    TestBed.resetTestingModule();
+    const restored = newSession();
+    // Until the catalog loads, only malformed lines are dropped.
+    expect(restored.items()).toHaveLength(3);
 
-    expect(TestBed.inject(CartService).items()).toEqual([
-      { id: 'floral-bikini:coral:M', ...bikiniM, quantity: 3 },
-    ]);
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(restored.items()).toEqual([{ id: 'floral-bikini:coral:M', ...bikiniM, quantity: 3 }]);
+    expect(restored.totalCount()).toBe(3);
   });
 
   it('ignores unreadable storage', () => {
     localStorage.setItem(CART_STORAGE_KEY, '{not json');
-    TestBed.resetTestingModule();
-
-    expect(TestBed.inject(CartService).items()).toEqual([]);
+    expect(newSession().items()).toEqual([]);
   });
 
   it('picks up changes made in another tab', () => {

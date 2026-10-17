@@ -3,8 +3,10 @@ import { Title } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { firstValueFrom } from 'rxjs';
+import { mapRows, provideCatalogTesting, SEED_ROWS } from '../../../testing/catalog-testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { CartService } from '../../core/cart/cart.service';
+import { Product } from '../../core/products/product.model';
 import { LanguageService } from '../../core/i18n/language.service';
 import { ProductPage } from './product';
 
@@ -12,7 +14,7 @@ describe('ProductPage', () => {
   let harness: RouterTestingHarness;
   let el: HTMLElement;
 
-  async function open(slug: string) {
+  async function open(slug: string, listProducts?: () => Promise<Product[]>) {
     localStorage.clear();
     TestBed.configureTestingModule({
       providers: [
@@ -21,11 +23,13 @@ describe('ProductPage', () => {
           withComponentInputBinding(),
         ),
         provideTranslateTesting(),
+        provideCatalogTesting(listProducts),
       ],
     });
     await firstValueFrom(TestBed.inject(LanguageService).init());
     harness = await RouterTestingHarness.create();
     await harness.navigateByUrl(`/product/${slug}`, ProductPage);
+    await harness.fixture.whenStable(); // catalog loaded
     el = harness.routeNativeElement!;
   }
 
@@ -160,6 +164,90 @@ describe('ProductPage', () => {
     ]);
     expect(details.map((d) => d.open)).toEqual([true, false, false]);
     expect(details[0].textContent).toContain('ფერადი ყვავილოვანი ბიკინი');
+  });
+
+  it('shows the name in English after switching language', async () => {
+    await open('floral-bikini');
+    await firstValueFrom(TestBed.inject(LanguageService).use('en'));
+    await harness.fixture.whenStable();
+
+    expect(text('h1')).toBe('Floral bikini');
+    expect(text('app-color-swatch-picker legend')).toBe('Color: Pink');
+    expect(TestBed.inject(Title).getTitle()).toBe('Floral bikini — Cikloni');
+  });
+
+  it('shows the product photo for the selected color when there is one', async () => {
+    const [bikini, ...rest] = SEED_ROWS;
+    await open('floral-bikini', async () =>
+      mapRows([
+        {
+          ...bikini,
+          product_images: [{ color_id: 'lilac', storage_path: 'bikini/lilac.webp', sort_order: 0 }],
+        },
+        ...rest,
+      ]),
+    );
+    const image = () => el.querySelector<HTMLImageElement>('[data-testid="main-image"] img');
+
+    expect(image()).toBeNull();
+
+    await click(el.querySelector('app-color-swatch-picker button[aria-label="იასამნისფერი"]'));
+
+    expect(image()?.getAttribute('src')).toBe(
+      'https://storage.test/product-images/bikini/lilac.webp',
+    );
+    expect(image()?.alt).toBe('პროდუქტის ფოტო — იასამნისფერი');
+  });
+
+  it('shows a loading state until the catalog arrives', async () => {
+    let resolve!: (products: Product[]) => void;
+    const pending = new Promise<Product[]>((r) => (resolve = r));
+    localStorage.clear();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter(
+          [{ path: 'product/:slug', component: ProductPage }],
+          withComponentInputBinding(),
+        ),
+        provideTranslateTesting(),
+        provideCatalogTesting(() => pending),
+      ],
+    });
+    await firstValueFrom(TestBed.inject(LanguageService).init());
+    harness = await RouterTestingHarness.create();
+    // Don't wait for stability: the catalog request is still pending.
+    void harness.navigateByUrl('/product/floral-bikini');
+    await new Promise((r) => setTimeout(r));
+    harness.detectChanges();
+    el = harness.routeNativeElement!;
+
+    expect(el.querySelector('[data-testid="product-skeleton"]')).toBeTruthy();
+    expect(text('[role="status"]')).toBe('პროდუქტები იტვირთება…');
+    expect(text('h1')).toBeUndefined();
+
+    resolve(mapRows(SEED_ROWS));
+    await harness.fixture.whenStable();
+
+    expect(el.querySelector('[data-testid="product-skeleton"]')).toBeNull();
+    expect(text('h1')).toBe('ყვავილოვანი ბიკინი');
+  });
+
+  it('shows an error with a retry button when loading fails', async () => {
+    const listProducts = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('offline'))
+      .mockResolvedValue(mapRows(SEED_ROWS));
+    await open('floral-bikini', listProducts);
+
+    expect(text('[role="alert"] p')).toBe(
+      'პროდუქტების ჩატვირთვა ვერ მოხერხდა. შეამოწმე ინტერნეტთან კავშირი და სცადე თავიდან.',
+    );
+    expect(text('h1')).toBeUndefined();
+
+    await click(el.querySelector('[role="alert"] button'));
+
+    expect(el.querySelector('[role="alert"]')).toBeNull();
+    expect(text('h1')).toBe('ყვავილოვანი ბიკინი');
   });
 
   it('shows a not-found message for an unknown slug', async () => {

@@ -24,22 +24,32 @@
         </li>
         <li class="flex items-center gap-1.5">
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{{ p.nameKey | translate }}</span>
+          <span aria-current="page">{{ p.name | localized }}</span>
         </li>
       </ol>
     </nav>
 
     <div class="flex flex-wrap gap-12">
-      <!-- Gallery. TODO: replace placeholders with product photos. -->
-      <div class="flex min-w-0 grow basis-120 flex-col gap-4" aria-hidden="true">
+      <!-- Gallery. TODO: replace the thumbnail placeholders with product photos. -->
+      @let photoLabel =
+        'PRODUCT.PHOTO_LABEL' | translate: { color: (currentColor().name | localized) };
+      <div class="flex min-w-0 grow basis-120 flex-col gap-4">
         <div
-          class="flex h-96 items-end rounded-hero p-6 font-bold transition-colors duration-300 motion-reduce:transition-none md:h-140"
+          class="relative flex h-96 items-end overflow-hidden rounded-hero p-6 font-bold transition-colors duration-300 motion-reduce:transition-none md:h-140"
           data-testid="main-image"
           [style.background-color]="currentColor().soft"
         >
-          {{ 'PRODUCT.PHOTO_LABEL' | translate: { color: (currentColor().nameKey | translate) } }}
+          @if (mainImage(); as image) {
+            <img
+              [src]="image.url"
+              [alt]="photoLabel"
+              class="absolute inset-0 size-full object-cover"
+            />
+          } @else {
+            <span aria-hidden="true">{{ photoLabel }}</span>
+          }
         </div>
-        <div class="flex gap-4">
+        <div class="flex gap-4" aria-hidden="true">
           <div class="flex h-35 flex-1 items-end rounded-panel bg-lilac p-3 text-sm font-bold">
             {{ 'PRODUCT.THUMBNAILS.MODEL' | translate }}
           </div>
@@ -60,7 +70,7 @@
               {{ 'PRODUCT.BADGE' | translate }}
             </p>
           }
-          <h1 class="m-0 text-3xl sm:text-4xl md:text-title">{{ p.nameKey | translate }}</h1>
+          <h1 class="m-0 text-3xl sm:text-4xl md:text-title">{{ p.name | localized }}</h1>
           <p class="m-0 text-2xl font-bold">{{ price }}</p>
         </div>
 
@@ -74,7 +84,7 @@
           </p>
         </div>
 
-        <app-color-swatch-picker [colors]="colors()" [(selected)]="color" />
+        <app-color-swatch-picker [colors]="p.colors" [(selected)]="color" />
         <app-size-picker [sizes]="p.sizes" [(selected)]="size" />
 
         <div class="flex flex-wrap gap-3">
@@ -120,12 +130,33 @@
                   class="shrink-0 transition-transform group-open:rotate-180 motion-reduce:transition-none"
                 />
               </summary>
-              <p class="m-0 pb-3.5">{{ section.text | translate }}</p>
+              <p class="m-0 pb-3.5">
+                {{ section.text ? (section.text | localized) : (section.textKey! | translate) }}
+              </p>
             </details>
           }
         </div>
       </div>
     </div>
+  </div>
+} @else if (products.status() === 'loading') {
+  <div class="mx-auto max-w-page px-6 pt-6 pb-20" aria-busy="true">
+    <p class="sr-only" role="status">{{ 'CATALOG.LOADING' | translate }}</p>
+    <div class="flex flex-wrap gap-12" aria-hidden="true" data-testid="product-skeleton">
+      <div
+        class="h-96 min-w-0 grow basis-120 rounded-hero bg-blush motion-safe:animate-pulse md:h-140"
+      ></div>
+      <div class="flex min-w-0 grow basis-100 flex-col gap-4">
+        <div class="h-12 w-3/4 rounded-pill bg-blush motion-safe:animate-pulse"></div>
+        <div class="h-8 w-1/4 rounded-pill bg-blush motion-safe:animate-pulse"></div>
+        <div class="h-14 rounded-2xl bg-blush motion-safe:animate-pulse"></div>
+        <div class="h-28 rounded-2xl bg-blush motion-safe:animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+} @else if (products.status() === 'error') {
+  <div class="mx-auto max-w-page px-6 py-20">
+    <app-load-error (retry)="products.reload()" />
   </div>
 } @else {
   <div class="mx-auto flex max-w-page flex-col items-start gap-4 px-6 py-20">

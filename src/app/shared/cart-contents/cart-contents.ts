@@ -13,14 +13,23 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { CartItem, CartService, MAX_LINE_QUANTITY } from '../../core/cart/cart.service';
-import { Product, ProductColor } from '../../core/products/product.model';
+import { LocalizedText } from '../../core/i18n/localized-text';
+import {
+  Product,
+  ProductColor,
+  ProductImage,
+  productImage,
+} from '../../core/products/product.model';
 import { ProductService } from '../../core/products/product.service';
+import { LoadError } from '../load-error/load-error';
+import { LocalizedPipe } from '../localized/localized.pipe';
 import { QuantityStepper } from '../quantity-stepper/quantity-stepper';
 
 interface CartLine {
   item: CartItem;
   product: Product;
   color: ProductColor;
+  image: ProductImage | undefined;
   /** Null until the product has a price. */
   lineTotal: number | null;
 }
@@ -31,7 +40,14 @@ interface CartLine {
  */
 @Component({
   selector: 'app-cart-contents',
-  imports: [RouterLink, TranslatePipe, LucideAngularModule, QuantityStepper],
+  imports: [
+    RouterLink,
+    TranslatePipe,
+    LucideAngularModule,
+    LoadError,
+    LocalizedPipe,
+    QuantityStepper,
+  ],
   host: {
     class: 'flex min-h-0 flex-col',
   },
@@ -39,7 +55,7 @@ interface CartLine {
 })
 export class CartContents {
   private readonly cart = inject(CartService);
-  private readonly products = inject(ProductService);
+  protected readonly products = inject(ProductService);
   private readonly injector = inject(Injector);
 
   /** Drawer: scrolling list with the summary pinned below. Page: list and summary side by side. */
@@ -48,12 +64,19 @@ export class CartContents {
   private readonly list = viewChild<ElementRef<HTMLElement>>('list');
   private readonly shopLink = viewChild<ElementRef<HTMLElement>>('shopLink');
 
+  /** Lines can only be shown once the catalog has loaded (names, colors and prices). */
+  protected readonly waiting = computed(
+    () => this.cart.items().length > 0 && this.products.status() !== 'ready',
+  );
+
   protected readonly lines = computed<CartLine[]>(() =>
     this.cart.items().flatMap((item) => {
       const product = this.products.getBySlug(item.slug);
-      if (!product) return [];
+      const color = product?.colors.find((c) => c.id === item.colorId);
+      if (!product || !color) return [];
       const lineTotal = product.price === null ? null : product.price * item.quantity;
-      return [{ item, product, color: this.products.getColor(item.colorId), lineTotal }];
+      const image = productImage(product, item.colorId);
+      return [{ item, product, color, image, lineTotal }];
     }),
   );
 
@@ -66,9 +89,11 @@ export class CartContents {
   );
 
   /** Description of the last removed line, announced to screen readers. */
-  protected readonly removed = signal<{ nameKey: string; colorKey: string; size: string } | null>(
-    null,
-  );
+  protected readonly removed = signal<{
+    name: LocalizedText;
+    color: LocalizedText;
+    size: string;
+  } | null>(null);
 
   protected readonly maxQuantity = MAX_LINE_QUANTITY;
   protected readonly trash = Trash2;
@@ -80,8 +105,8 @@ export class CartContents {
 
   protected remove(line: CartLine): void {
     this.removed.set({
-      nameKey: line.product.nameKey,
-      colorKey: line.color.nameKey,
+      name: line.product.name,
+      color: line.color.name,
       size: line.item.size,
     });
     this.cart.removeItem(line.item.id);

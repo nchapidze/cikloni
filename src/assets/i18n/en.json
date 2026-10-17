@@ -51,25 +51,13 @@
     "PRICE_PLACEHOLDER": "[price] ₾",
     "PRICE": "{{price}} ₾",
     "PHOTO": "Product photo",
-    "CARD_LABEL": "{{name}}, absorbency: {{level}}, {{price}}",
-    "ITEMS": {
-      "FLORAL_BIKINI": {
-        "NAME": "Floral bikini",
-        "DESCRIPTION": "A colorful floral bikini with a multi-layer absorbent lining. [fabric composition, number of layers, certificates]"
-      },
-      "SEAMLESS_HIPSTER": {
-        "NAME": "Seamless hipster",
-        "DESCRIPTION": "[description]"
-      },
-      "COLORFUL_BOXER": {
-        "NAME": "Colorful boxer",
-        "DESCRIPTION": "[description]"
-      },
-      "LACE_BRAZILIAN": {
-        "NAME": "Lace Brazilian",
-        "DESCRIPTION": "[description]"
-      }
-    }
+    "CARD_LABEL": "{{name}}, absorbency: {{level}}, {{price}}"
+  },
+  "CATALOG": {
+    "LOADING": "Loading products…",
+    "ERROR": "We couldn't load the products. Check your internet connection and try again.",
+    "RETRY": "Try again",
+    "EMPTY": "Products are coming soon."
   },
   "HOW_IT_WORKS": {
     "TITLE": "How it works",
@@ -182,13 +170,7 @@
       }
     },
     "COLOR": {
-      "LABEL": "Color: {{color}}",
-      "OPTIONS": {
-        "CORAL": "Pink",
-        "LILAC": "Lilac",
-        "ORANGE": "Orange",
-        "MINT": "Mint"
-      }
+      "LABEL": "Color: {{color}}"
     },
     "SIZE": {
       "LABEL": "Size"
@@ -210,8 +192,7 @@
         "TITLE": "Description"
       },
       "CARE": {
-        "TITLE": "Care",
-        "TEXT": "Rinse in cold water, machine wash on a cold cycle and air dry. Don't use fabric softener or a tumble dryer."
+        "TITLE": "Care"
       },
       "DELIVERY": {
         "TITLE": "Delivery and returns",

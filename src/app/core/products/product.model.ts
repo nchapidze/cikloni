@@ -1,16 +1,39 @@
+import { LocalizedText } from '../i18n/localized-text';
+
 export const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
 export type Size = (typeof SIZES)[number];
 
-export type ColorId = 'coral' | 'lilac' | 'orange' | 'mint';
+/** Preselected on the product page when the product comes in it. */
+export const DEFAULT_SIZE: Size = 'M';
+
+export function isSize(value: unknown): value is Size {
+  return SIZES.includes(value as Size);
+}
+
+/** Color id from the database, e.g. "coral". */
+export type ColorId = string;
 
 /** A product color option (design/PRODUCT.md color table). */
 export interface ProductColor {
   id: ColorId;
-  nameKey: string;
-  /** Swatch button color (a CSS color, usually a theme var()). */
+  name: LocalizedText;
+  /** Swatch button color (any CSS color). */
   swatch: string;
-  /** Soft tint used behind product photos. */
+  /** Soft tint used behind product photos (a CSS color, usually a theme var()). */
   soft: string;
+}
+
+export interface ProductVariant {
+  colorId: ColorId;
+  size: Size;
+  /** For display only; the server checks stock when an order is placed. */
+  stock: number;
+}
+
+export interface ProductImage {
+  url: string;
+  /** null = shown for every color. */
+  colorId: ColorId | null;
 }
 
 export type AbsorbencyLevel = 'light' | 'medium' | 'heavy';
@@ -46,21 +69,37 @@ export const ABSORBENCY: Record<AbsorbencyLevel, AbsorbencyInfo> = {
 };
 
 export interface Product {
+  id: string;
   /** URL identifier, used in /product/:slug. */
   slug: string;
-  nameKey: string;
-  /** Price in GEL; null until prices are set (render PRODUCTS.PRICE_PLACEHOLDER). */
+  name: LocalizedText;
+  description: LocalizedText | null;
+  care: LocalizedText | null;
+  /** Price in GEL for display; null until set (render PRODUCTS.PRICE_PLACEHOLDER). */
   price: number | null;
-  /** Shows the "bestseller" badge on the product page. */
+  /** Shows the "bestseller" badge and lists the product in the home bestsellers section. */
   bestseller: boolean;
   absorbency: AbsorbencyLevel;
-  /** Available colors, in display order. */
-  colors: readonly ColorId[];
-  defaultColor: ColorId;
+  /** Colors the product comes in, in display order. */
+  colors: readonly ProductColor[];
+  /** Sizes the product comes in, XS to XXL. */
   sizes: readonly Size[];
+  variants: readonly ProductVariant[];
+  /** In display order. */
+  images: readonly ProductImage[];
+  defaultColor: ColorId;
   defaultSize: Size;
-  descriptionKey: string;
-  careKey: string;
-  /** Color whose soft tint is the home page card background (design/HOME.md section 5). */
-  cardColor: ColorId;
+}
+
+/** The first photo for `colorId`, else the first photo shared by all colors. */
+export function productImage(product: Product, colorId: ColorId): ProductImage | undefined {
+  return (
+    product.images.find((image) => image.colorId === colorId) ??
+    product.images.find((image) => image.colorId === null)
+  );
+}
+
+/** True when the product is sold in this color and size. */
+export function hasVariant(product: Product, colorId: ColorId, size: Size): boolean {
+  return product.variants.some((v) => v.colorId === colorId && v.size === size);
 }
