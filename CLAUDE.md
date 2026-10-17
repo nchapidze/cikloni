@@ -14,3 +14,4 @@
 - Never trust prices, totals or stock from the browser. Orders are created server-side, where prices are recalculated from the database.
 - Secrets (service role key, payment keys) never go in Angular code or environment files committed to git.
 - The admin panel lives under /admin, is lazy-loaded, and is not translated (Georgian only).
+- Supabase may later be replaced by a NestJS API. Components never import supabase-js; all data access goes through services in src/app/core/data-access/. Business logic for orders lives server-side only.
