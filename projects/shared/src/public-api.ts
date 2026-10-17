@@ -15,6 +15,7 @@ export * from './lib/models/product.palette';
 export * from './lib/models/checkout.config';
 export * from './lib/models/order.model';
 export * from './lib/models/admin-product.model';
+export * from './lib/models/admin-dashboard.model';
 
 // Supabase setup
 export * from './lib/supabase/supabase.config';
