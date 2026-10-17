@@ -12,6 +12,7 @@ export * from './lib/i18n/localized.pipe';
 // Models
 export * from './lib/models/product.model';
 export * from './lib/models/product.palette';
+export * from './lib/models/product-style';
 export * from './lib/models/checkout.config';
 export * from './lib/models/order.model';
 export * from './lib/models/admin-product.model';

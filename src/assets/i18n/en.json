@@ -51,13 +51,43 @@
     "PRICE_PLACEHOLDER": "[price] ₾",
     "PRICE": "{{price}} ₾",
     "PHOTO": "Product photo",
-    "CARD_LABEL": "{{name}}, absorbency: {{level}}, {{price}}"
+    "CARD_LABEL": "{{name}}, absorbency: {{level}}, {{price}}",
+    "SOLD_OUT": "Out of stock"
   },
   "CATALOG": {
     "LOADING": "Loading products…",
     "ERROR": "We couldn't load the products. Check your internet connection and try again.",
     "RETRY": "Try again",
-    "EMPTY": "Products are coming soon."
+    "EMPTY": "Products are coming soon.",
+    "TITLE": "Shop",
+    "INTRO": "Period underwear for every day: choose your absorbency, style, size and color.",
+    "RESULTS_ONE": "{{count}} product",
+    "RESULTS_OTHER": "{{count}} products",
+    "FILTERS": {
+      "TITLE": "Filters",
+      "OPEN": "Filters",
+      "OPEN_COUNT": "Filters ({{count}})",
+      "CLOSE": "Close filters",
+      "ABSORBENCY": "Absorbency",
+      "STYLE": "Style",
+      "SIZE": "Size",
+      "COLOR": "Color",
+      "CLEAR": "Clear all",
+      "SHOW_RESULTS_ONE": "Show {{count}} product",
+      "SHOW_RESULTS_OTHER": "Show {{count}} products"
+    },
+    "SORT": {
+      "LABEL": "Sort by",
+      "FEATURED": "Featured",
+      "PRICE_ASC": "Price: low to high",
+      "PRICE_DESC": "Price: high to low",
+      "NEWEST": "Newest"
+    },
+    "NO_RESULTS": {
+      "TITLE": "No products match",
+      "TEXT": "Try other filters or clear them.",
+      "CLEAR": "Clear filters"
+    }
   },
   "HOW_IT_WORKS": {
     "TITLE": "How it works",

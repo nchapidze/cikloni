@@ -11,8 +11,10 @@ import {
   AbsorbencyLevel,
   AdminProduct,
   AdminVariant,
+  DEFAULT_PRODUCT_STYLE,
   HEX_COLOR_PATTERN,
   LocalizedText,
+  ProductStyle,
   SIZES,
   SLUG_PATTERN,
   Size,
@@ -39,6 +41,7 @@ export type ProductForm = FormGroup<{
   care: FormControl<LocalizedText | null>;
   priceGel: FormControl<number | null>;
   absorbency: FormControl<AbsorbencyLevel>;
+  style: FormControl<ProductStyle>;
   sortOrder: FormControl<number | null>;
   isActive: FormControl<boolean>;
   variants: FormArray<VariantForm>;
@@ -149,6 +152,9 @@ export function productForm(product?: AdminProduct): ProductForm {
     absorbency: new FormControl<AbsorbencyLevel>(product?.absorbency ?? 'medium', {
       nonNullable: true,
     }),
+    style: new FormControl<ProductStyle>(product?.style ?? DEFAULT_PRODUCT_STYLE, {
+      nonNullable: true,
+    }),
     sortOrder: new FormControl<number | null>(product?.sortOrder ?? 0, [
       Validators.required,
       integer,
@@ -224,6 +230,7 @@ export function toProductToSave(
     care: trim(value.care),
     priceGel: value.priceGel,
     absorbency: value.absorbency,
+    style: value.style,
     sortOrder: value.sortOrder ?? 0,
     isActive: value.isActive,
     variants: value.variants.map((row) => {

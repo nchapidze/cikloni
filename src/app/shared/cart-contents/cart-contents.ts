@@ -19,7 +19,7 @@ import {
   Product,
   ProductColor,
   ProductImage,
-  productImage,
+  productThumbnail,
 } from '@cikloni/shared';
 import { ProductService } from '../../core/products/product.service';
 import { LoadError } from '../load-error/load-error';
@@ -75,7 +75,7 @@ export class CartContents {
       const color = product?.colors.find((c) => c.id === item.colorId);
       if (!product || !color) return [];
       const lineTotal = product.price === null ? null : product.price * item.quantity;
-      const image = productImage(product, item.colorId);
+      const image = productThumbnail(product, item.colorId);
       return [{ item, product, color, image, lineTotal }];
     }),
   );

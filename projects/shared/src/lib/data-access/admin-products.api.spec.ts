@@ -69,6 +69,7 @@ describe('toAdminProduct', () => {
       care: null,
       price_gel: null,
       absorbency: 'light',
+      style: 'hipster',
       sort_order: 0,
       is_active: false,
       product_variants: [
@@ -94,6 +95,7 @@ describe('AdminProductsApi.saveProduct', () => {
     care: { ka: 'მოვლა' },
     priceGel: 39.9,
     absorbency: 'medium',
+    style: 'boxer',
     sortOrder: 0,
     isActive: true,
     variants: [
@@ -135,7 +137,12 @@ describe('AdminProductsApi.saveProduct', () => {
     const path = upload.mock.calls[0][0] as string;
     expect(path).toMatch(/^p1\/[0-9a-f-]{36}\.jpg$/);
     expect(rpc).toHaveBeenCalledWith('save_product', {
-      product: expect.objectContaining({ id: 'p1', slug: 'floral-bikini', price_gel: 39.9 }),
+      product: expect.objectContaining({
+        id: 'p1',
+        slug: 'floral-bikini',
+        price_gel: 39.9,
+        style: 'boxer',
+      }),
       variants: [expect.objectContaining({ id: null, color_hex: '#e8546b', loaded_stock: null })],
       images: [
         { id: 'i1', storage_path: 'p1/old.jpg', color_id: null, sort_order: 0 },

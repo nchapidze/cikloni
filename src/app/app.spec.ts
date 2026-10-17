@@ -61,6 +61,7 @@ describe('App', () => {
     el.querySelector<HTMLButtonElement>('app-language-toggle button')!.click();
     await fixture.whenStable();
     expect(el.querySelector('#main-nav a')?.textContent?.trim()).toBe('Shop');
+    expect(el.querySelector('#main-nav a')?.getAttribute('href')).toBe('/shop');
     expect(document.documentElement.lang).toBe('en');
   });
 

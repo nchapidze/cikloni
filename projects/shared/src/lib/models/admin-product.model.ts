@@ -1,5 +1,6 @@
 import { LocalizedText } from '../i18n/localized-text';
 import { AbsorbencyLevel, Size } from './product.model';
+import { ProductStyle } from './product-style';
 
 /** A variant with this many items or fewer gets the low-stock warning. */
 export const LOW_STOCK_THRESHOLD = 3;
@@ -32,6 +33,7 @@ export interface AdminProduct {
   care: LocalizedText | null;
   priceGel: number | null;
   absorbency: AbsorbencyLevel;
+  style: ProductStyle;
   sortOrder: number;
   isActive: boolean;
   variants: AdminVariant[];

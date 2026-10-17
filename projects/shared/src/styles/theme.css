@@ -40,6 +40,8 @@
 
   /* Layout: max-w-page is the 1200px content container (pair with mx-auto px-6). */
   --container-page: 1200px;
+  /* max-h-sheet: mobile bottom sheets leave the top of the page visible. */
+  --spacing-sheet: 85dvh;
 
   /* Breakpoints (in addition to Tailwind's sm/md/lg/xl/2xl). */
   --breakpoint-xs: 480px;

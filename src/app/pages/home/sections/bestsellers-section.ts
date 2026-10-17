@@ -19,8 +19,7 @@ import { ProductCard } from '../../../shared/product-card/product-card';
     >
       <div class="flex flex-wrap items-end justify-between gap-4">
         <h2 id="bestsellers-title" class="m-0">{{ 'PRODUCTS.TITLE' | translate }}</h2>
-        <!-- TODO: point to the catalog page once it exists. -->
-        <a routerLink="/" fragment="shop" class="inline-flex min-h-11 items-center font-bold">{{
+        <a routerLink="/shop" class="inline-flex min-h-11 items-center font-bold">{{
           'PRODUCTS.VIEW_ALL' | translate
         }}</a>
       </div>

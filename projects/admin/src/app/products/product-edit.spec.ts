@@ -14,6 +14,7 @@ const PRODUCT: AdminProduct = {
   care: { ka: 'მოვლა' },
   priceGel: 39.9,
   absorbency: 'medium',
+  style: 'bikini',
   sortOrder: 1,
   isActive: true,
   variants: [

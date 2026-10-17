@@ -32,13 +32,13 @@ export class Header {
 
   protected readonly icons = { cart: ShoppingBag, menu: Menu, close: X };
 
-  /** Home page section anchors (ids defined in design/HOME.md). */
-  protected readonly links = [
-    { fragment: 'shop', label: 'HEADER.NAV.SHOP' },
-    { fragment: 'how', label: 'HEADER.NAV.HOW' },
-    { fragment: 'absorbency', label: 'HEADER.NAV.ABSORBENCY' },
-    { fragment: 'faq', label: 'HEADER.NAV.FAQ' },
-    { fragment: 'about', label: 'HEADER.NAV.ABOUT' },
+  /** The catalog, then home page section anchors (ids defined in design/HOME.md). */
+  protected readonly links: { path: string; fragment?: string; label: string }[] = [
+    { path: '/shop', label: 'HEADER.NAV.SHOP' },
+    { path: '/', fragment: 'how', label: 'HEADER.NAV.HOW' },
+    { path: '/', fragment: 'absorbency', label: 'HEADER.NAV.ABSORBENCY' },
+    { path: '/', fragment: 'faq', label: 'HEADER.NAV.FAQ' },
+    { path: '/', fragment: 'about', label: 'HEADER.NAV.ABOUT' },
   ];
 
   constructor() {

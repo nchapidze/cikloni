@@ -51,7 +51,7 @@ describe('ProductPage', () => {
       li.textContent?.replace('/', '').trim(),
     );
     expect(crumbs).toEqual(['მთავარი', 'მაღაზია', 'ყვავილოვანი ბიკინი']);
-    expect(el.querySelector('nav ol a[fragment], nav ol a[href="/#shop"]')).toBeTruthy();
+    expect(el.querySelector('nav ol a[href="/shop"]')).toBeTruthy();
     expect(el.querySelector('[aria-current="page"]')?.textContent?.trim()).toBe(
       'ყვავილოვანი ბიკინი',
     );

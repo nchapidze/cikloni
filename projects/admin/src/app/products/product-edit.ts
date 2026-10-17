@@ -15,7 +15,14 @@ import {
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ABSORBENCY_LEVELS, AdminProduct, ProductSaveFailure, slugify } from '@cikloni/shared';
+import {
+  ABSORBENCY_LEVELS,
+  AdminProduct,
+  PRODUCT_STYLES,
+  PRODUCT_STYLE_LABELS,
+  ProductSaveFailure,
+  slugify,
+} from '@cikloni/shared';
 import { AdminProductsApi, ImageToSave, ProductSaveError } from '@cikloni/shared/admin';
 import { LocalizedInput } from '@cikloni/shared/forms';
 import { ArrowLeft, LucideAngularModule, Trash2 } from 'lucide-angular';
@@ -156,7 +163,7 @@ const FIELD =
             [showErrors]="submitted()"
           />
 
-          <div class="grid gap-5 sm:grid-cols-3">
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <div class="flex flex-col gap-2">
               <label for="product-price" class="font-bold">ფასი (₾)</label>
               <input
@@ -191,6 +198,20 @@ const FIELD =
               >
                 @for (level of absorbencyLevels; track level) {
                   <option [value]="level">{{ absorbencyLabels[level] }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="product-style" class="font-bold">სტილი</label>
+              <select
+                id="product-style"
+                class="cursor-pointer"
+                [class]="field"
+                formControlName="style"
+              >
+                @for (style of styles; track style) {
+                  <option [value]="style">{{ styleLabels[style].ka }}</option>
                 }
               </select>
             </div>
@@ -331,6 +352,8 @@ export class AdminProductEditPage {
   protected readonly maxPrice = MAX_PRICE_GEL;
   protected readonly absorbencyLevels = ABSORBENCY_LEVELS;
   protected readonly absorbencyLabels = ABSORBENCY_LABELS;
+  protected readonly styles = PRODUCT_STYLES;
+  protected readonly styleLabels = PRODUCT_STYLE_LABELS;
   protected readonly backIcon = ArrowLeft;
   protected readonly trashIcon = Trash2;
 

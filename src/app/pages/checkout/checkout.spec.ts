@@ -185,6 +185,11 @@ describe('CheckoutPage', () => {
     expect(text(order.querySelector('[data-testid="order-number"]'))).toBe('CK-001001');
     // Server amounts, not the catalog preview.
     expect(text(order.querySelector('[data-testid="summary-total"]'))).toBe('84,80 ₾');
+    // Thumbnails come from the cart lines (the server result has none).
+    const thumbnails = [
+      ...order.querySelectorAll<HTMLElement>('[data-testid="summary-line"] > div[aria-hidden]'),
+    ];
+    expect(thumbnails.map((t) => t.style.backgroundColor)).toEqual(['var(--color-coral-soft)']);
     expect(text(order.querySelector('[data-testid="order-delivery"]'))).toContain(
       'თბილისი, ვაჟა-ფშაველას 1',
     );

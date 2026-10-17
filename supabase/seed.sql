@@ -7,9 +7,10 @@
 -- ---------------------------------------------------------------------------
 
 insert into public.products
-  (slug, name, description, care, price_gel, absorbency, is_bestseller, is_active, sort_order)
+  (slug, name, description, care, price_gel, absorbency, style, is_bestseller, is_active, sort_order)
 select
   p.slug, p.name, p.description, care.text, null, p.absorbency::public.absorbency_level,
+  p.style::public.product_style,
   true, true, p.sort_order
 from (
   values
@@ -18,6 +19,7 @@ from (
       '{"ka": "ყვავილოვანი ბიკინი", "en": "Floral bikini"}'::jsonb,
       '{"ka": "ფერადი ყვავილოვანი ბიკინი რამდენიმეშრიანი შთამნთქმელი ფენით. [ქსოვილის შემადგენლობა, ფენების რაოდენობა, სერტიფიკატები]", "en": "A colorful floral bikini with a multi-layer absorbent lining. [fabric composition, number of layers, certificates]"}'::jsonb,
       'medium',
+      'bikini',
       1
     ),
     (
@@ -25,6 +27,7 @@ from (
       '{"ka": "უნაკერო ჰიპსტერი", "en": "Seamless hipster"}'::jsonb,
       '{"ka": "[აღწერა]", "en": "[description]"}'::jsonb,
       'light',
+      'hipster',
       2
     ),
     (
@@ -32,6 +35,7 @@ from (
       '{"ka": "ფერადი ბოქსერი", "en": "Colorful boxer"}'::jsonb,
       '{"ka": "[აღწერა]", "en": "[description]"}'::jsonb,
       'heavy',
+      'boxer',
       3
     ),
     (
@@ -39,9 +43,10 @@ from (
       '{"ka": "მაქმანიანი ბრაზილიანა", "en": "Lace Brazilian"}'::jsonb,
       '{"ka": "[აღწერა]", "en": "[description]"}'::jsonb,
       'light',
+      'brazilian',
       4
     )
-) as p (slug, name, description, absorbency, sort_order)
+) as p (slug, name, description, absorbency, style, sort_order)
 cross join (
   select '{"ka": "გამოავლე ცივ წყალში, გარეცხე ცივ რეჟიმზე, გააშრე ჰაერზე. არ გამოიყენო ქსოვილის დამარბილებელი და საშრობი მანქანა.", "en": "Rinse in cold water, machine wash on a cold cycle and air dry. Don''t use fabric softener or a tumble dryer."}'::jsonb as text
 ) as care
@@ -50,6 +55,7 @@ on conflict (slug) do update set
   description   = excluded.description,
   care          = excluded.care,
   absorbency    = excluded.absorbency,
+  style         = excluded.style,
   is_bestseller = excluded.is_bestseller,
   is_active     = excluded.is_active,
   sort_order    = excluded.sort_order;

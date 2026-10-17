@@ -10,6 +10,7 @@ import {
 } from '../models/admin-product.model';
 import { compareColors } from '../models/product.palette';
 import { AbsorbencyLevel, SIZES, Size } from '../models/product.model';
+import { ProductStyle } from '../models/product-style';
 import { ADMIN_SUPABASE } from '../supabase/admin-supabase.client';
 import { PRODUCT_IMAGES_BUCKET } from './products.api';
 
@@ -51,6 +52,7 @@ interface ProductRowForEdit {
   care: LocalizedText | null;
   price_gel: number | string | null;
   absorbency: AbsorbencyLevel;
+  style: ProductStyle;
   sort_order: number;
   is_active: boolean;
   product_variants: {
@@ -77,7 +79,7 @@ const LIST_SELECT = `
 `;
 
 const EDIT_SELECT = `
-  id, slug, name, description, care, price_gel, absorbency, sort_order, is_active,
+  id, slug, name, description, care, price_gel, absorbency, style, sort_order, is_active,
   product_variants (id, color_id, color_name, color_hex, size, stock, sku),
   product_images (id, storage_path, color_id, sort_order)
 `;
@@ -142,6 +144,7 @@ export function toAdminProduct(row: ProductRowForEdit): AdminProduct {
     care: row.care,
     priceGel: price(row.price_gel),
     absorbency: row.absorbency,
+    style: row.style,
     sortOrder: row.sort_order,
     isActive: row.is_active,
     variants: row.product_variants
@@ -237,6 +240,7 @@ export class AdminProductsApi {
         care: product.care,
         price_gel: product.priceGel,
         absorbency: product.absorbency,
+        style: product.style,
         sort_order: product.sortOrder,
         is_active: product.isActive,
       },

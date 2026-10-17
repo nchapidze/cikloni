@@ -46,6 +46,8 @@ function row(slug: string, fields: Partial<ProductRow>): ProductRow {
     care: CARE,
     price_gel: null,
     absorbency: 'light',
+    style: 'bikini',
+    created_at: '2026-10-15T12:00:00Z',
     is_bestseller: true,
     product_variants: variants(slug, ['coral', 'lilac', 'orange']),
     product_images: [],
@@ -62,14 +64,22 @@ export const SEED_ROWS: readonly ProductRow[] = [
       en: 'A colorful floral bikini with a multi-layer absorbent lining. [fabric composition, number of layers, certificates]',
     },
     absorbency: 'medium',
+    style: 'bikini',
     product_variants: variants('floral-bikini', ['coral', 'lilac', 'orange', 'mint']),
   }),
-  row('seamless-hipster', { name: { ka: 'უნაკერო ჰიპსტერი', en: 'Seamless hipster' } }),
+  row('seamless-hipster', {
+    name: { ka: 'უნაკერო ჰიპსტერი', en: 'Seamless hipster' },
+    style: 'hipster',
+  }),
   row('colorful-boxer', {
     name: { ka: 'ფერადი ბოქსერი', en: 'Colorful boxer' },
     absorbency: 'heavy',
+    style: 'boxer',
   }),
-  row('lace-brazilian', { name: { ka: 'მაქმანიანი ბრაზილიანა', en: 'Lace Brazilian' } }),
+  row('lace-brazilian', {
+    name: { ka: 'მაქმანიანი ბრაზილიანა', en: 'Lace Brazilian' },
+    style: 'brazilian',
+  }),
 ];
 
 export const testImageUrl = (path: string) => `https://storage.test/product-images/${path}`;

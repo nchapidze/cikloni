@@ -75,6 +75,37 @@ describe('OrderPage', () => {
     ]);
   });
 
+  it('shows the photo saved with the confirmation', async () => {
+    new OrderConfirmations().save({
+      orderNumber: 'CK-001003',
+      items: [
+        {
+          productName: { ka: 'ფერადი ბოქსერი' },
+          colorName: { ka: 'ნარინჯისფერი' },
+          size: 'L',
+          unitPriceGel: 35,
+          quantity: 1,
+        },
+      ],
+      subtotalGel: 35,
+      deliveryFeeGel: 5,
+      totalGel: 40,
+      city: 'თბილისი',
+      deliveryMethod: 'tbilisi',
+      paymentMethod: 'cash',
+      payment: { type: 'none' },
+      customer: { name: 'ნინო', phone: '+995555123456', address: 'რუსთაველის 5' },
+      thumbnails: [{ tint: 'var(--color-sunny)', imageUrl: 'https://cdn.example/boxer.jpg' }],
+    });
+    await open('CK-001003');
+
+    const thumbnail = el.querySelector<HTMLElement>('[data-testid="summary-line"] > div')!;
+    expect(thumbnail.style.backgroundColor).toBe('var(--color-sunny)');
+    expect(thumbnail.querySelector('img')!.getAttribute('src')).toBe(
+      'https://cdn.example/boxer.jpg',
+    );
+  });
+
   it('still thanks the customer when the order is not in this session', async () => {
     await open('CK-009999');
 

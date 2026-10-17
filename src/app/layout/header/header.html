@@ -20,10 +20,10 @@
       [attr.aria-label]="'HEADER.NAV_LABEL' | translate"
     >
       <ul class="m-0 w-full list-none p-0 nav:flex nav:w-auto nav:gap-6">
-        @for (link of links; track link.fragment) {
+        @for (link of links; track link.label) {
           <li>
             <a
-              routerLink="/"
+              [routerLink]="link.path"
               [fragment]="link.fragment"
               class="flex min-h-11 min-w-11 items-center font-medium text-plum no-underline underline-offset-4 hover:underline nav:justify-center"
               (click)="closeMenu()"

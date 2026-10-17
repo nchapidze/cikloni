@@ -92,17 +92,21 @@ export class OrderPage {
     return method ? `CHECKOUT.DELIVERY.METHODS.${method.toUpperCase()}` : '';
   });
 
-  protected readonly lines = computed<OrderSummaryLine[]>(
-    () =>
-      this.confirmation()?.items.map((item, index) => ({
+  protected readonly lines = computed<OrderSummaryLine[]>(() => {
+    const confirmation = this.confirmation();
+    return (
+      confirmation?.items.map((item, index) => ({
         id: String(index),
         name: item.productName,
         color: item.colorName,
         size: item.size,
         quantity: item.quantity,
         unitPriceGel: item.unitPriceGel,
-      })) ?? [],
-  );
+        tint: confirmation.thumbnails?.[index]?.tint,
+        imageUrl: confirmation.thumbnails?.[index]?.imageUrl,
+      })) ?? []
+    );
+  });
 
   protected readonly nextSteps = computed(() => {
     const order = this.confirmation();

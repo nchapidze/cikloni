@@ -10,6 +10,7 @@ import {
   SIZES,
   isSize,
 } from '../models/product.model';
+import { ProductStyle } from '../models/product-style';
 import { SUPABASE } from '../supabase/supabase.client';
 
 export const PRODUCT_IMAGES_BUCKET = 'product-images';
@@ -23,6 +24,8 @@ export interface ProductRow {
   care: LocalizedText | null;
   price_gel: number | null;
   absorbency: AbsorbencyLevel;
+  style: ProductStyle;
+  created_at: string;
   is_bestseller: boolean;
   product_variants: {
     id: string;
@@ -40,7 +43,7 @@ export interface ProductRow {
 }
 
 const PRODUCT_SELECT = `
-  id, slug, name, description, care, price_gel, absorbency, is_bestseller,
+  id, slug, name, description, care, price_gel, absorbency, style, created_at, is_bestseller,
   product_variants (id, color_id, color_name, color_hex, size, stock),
   product_images (color_id, storage_path, sort_order)
 `;
@@ -79,6 +82,8 @@ export function toProduct(row: ProductRow, imageUrl: (path: string) => string): 
     price: row.price_gel === null ? null : Number(row.price_gel),
     bestseller: row.is_bestseller,
     absorbency: row.absorbency,
+    style: row.style,
+    createdAt: new Date(row.created_at),
     colors: sortedColors,
     sizes,
     variants,

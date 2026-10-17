@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CreateOrderResult } from '@cikloni/shared';
 
+/** A line's thumbnail, taken from the cart (the server's result has no pictures). */
+export interface ConfirmationThumbnail {
+  /** Photo background (a CSS color). */
+  tint: string;
+  imageUrl?: string;
+}
+
 /** What the order page shows: the server's result plus the contact details from the form. */
 export interface OrderConfirmation extends CreateOrderResult {
   customer: { name: string; phone: string; address: string };
+  /** One per entry of `items`, same order; null when the cart line was not found. */
+  thumbnails?: (ConfirmationThumbnail | null)[];
 }
 
 const STORAGE_KEY = 'cikloni.orders';

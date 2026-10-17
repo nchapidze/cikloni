@@ -8,7 +8,7 @@ import {
   PaymentMethodId,
   Product,
   ProductColor,
-  productImage,
+  productThumbnail,
   StockProblem,
 } from '@cikloni/shared';
 import { ProductService } from '../products/product.service';
@@ -48,15 +48,16 @@ export class CheckoutService {
       const color = product?.colors.find((c) => c.id === item.colorId);
       const variant = product && findVariant(product, item.colorId, item.size);
       if (!product || !color || !variant) return [];
-      const imageUrl = productImage(product, item.colorId)?.url;
+      const imageUrl = productThumbnail(product, item.colorId)?.url;
       return [{ item, product, color, variantId: variant.id, imageUrl }];
     }),
   );
 
   /** Creates the order, then empties the cart. Throws CreateOrderError on failure. */
   async placeOrder(details: CheckoutDetails): Promise<CreateOrderResult> {
+    const lines = this.lines();
     const result = await this.api.createOrder({
-      items: this.lines().map((line) => ({
+      items: lines.map((line) => ({
         variantId: line.variantId,
         quantity: line.item.quantity,
       })),
@@ -74,6 +75,16 @@ export class CheckoutService {
     this.confirmations.save({
       ...result,
       customer: { name: details.name, phone: details.phone, address: details.address },
+      thumbnails: result.items.map((item) => {
+        // The server returns names and size, not variant ids; within one order they are unique.
+        const line = lines.find(
+          (l) =>
+            l.product.name.ka === item.productName.ka &&
+            l.color.name.ka === item.colorName.ka &&
+            l.item.size === item.size,
+        );
+        return line ? { tint: line.color.soft, imageUrl: line.imageUrl } : null;
+      }),
     });
     this.cart.clear();
     return result;

@@ -1,4 +1,5 @@
 import { LocalizedText } from '../i18n/localized-text';
+import { ProductStyle } from './product-style';
 
 export const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
 export type Size = (typeof SIZES)[number];
@@ -82,6 +83,9 @@ export interface Product {
   /** Shows the "bestseller" badge and lists the product in the home bestsellers section. */
   bestseller: boolean;
   absorbency: AbsorbencyLevel;
+  style: ProductStyle;
+  /** When the product was added (for "newest" sorting). */
+  createdAt: Date;
   /** Colors the product comes in, in display order. */
   colors: readonly ProductColor[];
   /** Sizes the product comes in, XS to XXL. */
@@ -99,6 +103,14 @@ export function productImage(product: Product, colorId: ColorId): ProductImage |
     product.images.find((image) => image.colorId === colorId) ??
     product.images.find((image) => image.colorId === null)
   );
+}
+
+/**
+ * A small picture for lists (cards, cart, checkout): the photo for `colorId` if there is one,
+ * else any photo of the product, so a thumbnail is never empty while the product has photos.
+ */
+export function productThumbnail(product: Product, colorId: ColorId): ProductImage | undefined {
+  return productImage(product, colorId) ?? product.images[0];
 }
 
 export function findVariant(
