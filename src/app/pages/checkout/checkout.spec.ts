@@ -2,16 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { firstValueFrom } from 'rxjs';
-import {
-  SEED_ROWS,
-  mapRows,
-  provideCatalogTesting,
-  variantId,
-} from '../../../testing/catalog-testing';
+import { mapRows, provideCatalogTesting, SEED_ROWS, variantId } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { CartService } from '../../core/cart/cart.service';
-import { CreateOrderResult } from '../../core/checkout/checkout.config';
-import { CreateOrderError, OrdersApi } from '../../core/data-access/orders.api';
+import { CreateOrderError, CreateOrderResult, OrdersApi } from '@cikloni/shared';
 import { LanguageService } from '../../core/i18n/language.service';
 import { OrderPage } from '../order/order';
 import { CheckoutPage } from './checkout';

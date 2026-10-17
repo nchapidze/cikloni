@@ -7,6 +7,7 @@ import {
 import { of } from 'rxjs';
 import en from '../assets/i18n/en.json';
 import ka from '../assets/i18n/ka.json';
+import { provideShopLanguage } from '../app/core/i18n/language.service';
 
 /** Loads the real translation files synchronously, without HTTP. For specs only. */
 class StaticTranslateLoader implements TranslateLoader {
@@ -16,9 +17,12 @@ class StaticTranslateLoader implements TranslateLoader {
 }
 
 export function provideTranslateTesting(): Provider[] {
-  return provideTranslateService({
-    loader: provideTranslateLoader(StaticTranslateLoader),
-    fallbackLang: 'ka',
-    lang: 'ka',
-  });
+  return [
+    provideTranslateService({
+      loader: provideTranslateLoader(StaticTranslateLoader),
+      fallbackLang: 'ka',
+      lang: 'ka',
+    }),
+    provideShopLanguage(),
+  ];
 }

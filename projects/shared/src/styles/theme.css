@@ -1,0 +1,136 @@
+/*
+ * Cikloni design tokens and base styles, shared by the shop and admin apps.
+ * Source of truth: design/DESIGN.md. Each app's styles.css imports this after tailwindcss.
+ * Components use these via Tailwind utilities (bg-plum, rounded-card, font-brand ...),
+ * never arbitrary values like bg-[#3A1D45].
+ */
+@theme {
+  /* Colors */
+  --color-plum: #3a1d45; /* text, primary buttons, dark sections */
+  --color-blush: #fdedef; /* alternate sections, text on dark */
+  --color-background: #fff8f8; /* page background */
+  --color-border: #f3d9de; /* dividers, card borders */
+  --color-coral: #f37a8c; /* logo spiral, highlights (never white text on it) */
+  --color-coral-strong: #e8546b; /* product swatch */
+  --color-coral-soft: #f7b0bc; /* HOME.md benefit 4 / floral bikini card */
+  --color-lilac: #c9b3f2; /* card/photo backgrounds */
+  --color-sunny: #ffd58a; /* badges */
+  --color-sunny-soft: #ffe3a3; /* newsletter section */
+  --color-mint: #a8e0d6; /* card/photo backgrounds */
+  /* PRODUCT.md trust chips */
+  --color-mint-tint: #e6f6f3;
+  --color-lilac-tint: #efe7fc;
+  --color-sunny-tint: #fff1d1;
+  /* PRODUCT.md color swatches (coral uses coral-strong; soft tints reuse coral-soft/lilac/sunny/mint) */
+  --color-lilac-strong: #8e5bd9;
+  --color-orange: #f28c38;
+  --color-mint-strong: #2aa79b;
+
+  /* Fonts */
+  --font-georgian: 'Noto Sans Georgian', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-brand:
+    'Fredoka', 'Noto Sans Georgian', system-ui, sans-serif; /* Latin wordmark, numbers */
+
+  /* Radii */
+  --radius-pill: 999px;
+  --radius-card: 24px;
+  --radius-hero: 28px;
+  --radius-panel: 20px; /* FAQ items, product thumbnails */
+  --radius-chip: 14px; /* size buttons */
+
+  /* Layout: max-w-page is the 1200px content container (pair with mx-auto px-6). */
+  --container-page: 1200px;
+
+  /* Breakpoints (in addition to Tailwind's sm/md/lg/xl/2xl). */
+  --breakpoint-xs: 480px;
+  --breakpoint-nav: 1100px; /* five Georgian nav labels fit on one line from here */
+
+  /* Type */
+  --leading-body: 1.6; /* body copy line-height */
+  --leading-heading: 1.2; /* h1-h3 */
+  --text-h1: 3.25rem;
+  --text-h1--line-height: 1.15;
+  --text-h2: 2.25rem;
+  --text-h2--line-height: 1.2;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.2;
+  --text-title: 2.5rem; /* product page h1 (PRODUCT.md) */
+  --text-title--line-height: 1.2;
+  --text-wordmark: 1.875rem; /* 30px "cikloni" wordmark */
+  --text-wordmark--line-height: 1;
+  --text-wordmark-sm: 1.625rem; /* 26px, narrow phones */
+  --text-wordmark-sm--line-height: 1;
+
+  /* Motion: the about-section logo; counterclockwise like a northern-hemisphere cyclone. */
+  --animate-cyclone: cyclone 16s linear infinite;
+
+  @keyframes cyclone {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background font-georgian text-base/body font-normal text-plum antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-extrabold;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+
+  /* Long Georgian words: step down on narrow screens. */
+  h2 {
+    @apply text-3xl md:text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  a {
+    @apply text-plum;
+  }
+
+  /* One visible focus style for every interactive element; dark sections switch to blush. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-plum;
+  }
+
+  /* Accordions draw their own chevron (Safari still shows the native marker otherwise). */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /*
+   * Accordions slide open and closed. Progressive enhancement: browsers without
+   * ::details-content / interpolate-size just open instantly, as before.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    details {
+      interpolate-size: allow-keywords;
+    }
+
+    details::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      opacity: 0;
+      transition:
+        block-size 300ms ease,
+        opacity 300ms ease,
+        content-visibility 300ms allow-discrete;
+    }
+
+    details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+}

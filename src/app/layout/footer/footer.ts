@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LogoMark } from '../../shared/logo-mark/logo-mark';
+import { LogoMark } from '@cikloni/shared';
 
 interface FooterItem {
   label: string;

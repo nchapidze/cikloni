@@ -1,0 +1,11 @@
+/* Source-only library: the apps compile it from source through the @cikloni/shared path alias. */
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "../..",
+    "outDir": "../../out-tsc/lib",
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/testing.ts", "src/testing/**"]
+}

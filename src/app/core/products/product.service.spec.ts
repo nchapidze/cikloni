@@ -1,6 +1,6 @@
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { mapRows, provideCatalogTesting, SEED_ROWS } from '../../../testing/catalog-testing';
+import { mapRows, provideCatalogTesting, SEED_ROWS } from '@cikloni/shared/testing';
 import { ProductService } from './product.service';
 
 describe('ProductService', () => {

@@ -1,0 +1,9 @@
+/*
+ * Admin styles. Design tokens live in the shared library (projects/shared/src/styles/theme.css).
+ * Tailwind only scans the admin app and the shared library, not the shop.
+ */
+@import 'tailwindcss' source(none);
+@import '../../shared/src/styles/theme.css';
+
+@source './';
+@source '../../shared/src';

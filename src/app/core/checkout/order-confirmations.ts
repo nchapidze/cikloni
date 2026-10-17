@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CreateOrderResult } from './checkout.config';
+import { CreateOrderResult } from '@cikloni/shared';
 
 /** What the order page shows: the server's result plus the contact details from the form. */
 export interface OrderConfirmation extends CreateOrderResult {

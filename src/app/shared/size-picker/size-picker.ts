@@ -1,6 +1,6 @@
 import { Component, input, model } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Size } from '../../core/products/product.model';
+import { Size } from '@cikloni/shared';
 
 /** XS-XXL size buttons; the selected one is filled plum (design/PRODUCT.md). */
 @Component({

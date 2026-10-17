@@ -1,16 +1,9 @@
-import { DOCUMENT, Injectable, computed, inject } from '@angular/core';
+import { DOCUMENT, Injectable, Provider, computed, inject } from '@angular/core';
+import { CURRENT_LANG, DEFAULT_LANG, LANGUAGES, Lang, isLang } from '@cikloni/shared';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-export const LANGUAGES = ['ka', 'en'] as const;
-export type Lang = (typeof LANGUAGES)[number];
-export const DEFAULT_LANG: Lang = 'ka';
-
 const STORAGE_KEY = 'cikloni.lang';
-
-function isLang(value: unknown): value is Lang {
-  return LANGUAGES.includes(value as Lang);
-}
 
 /** Switches between Georgian (default) and English, persisting the choice. */
 @Injectable({ providedIn: 'root' })
@@ -55,4 +48,9 @@ export class LanguageService {
       // Storage unavailable (private mode etc.); the choice just won't persist.
     }
   }
+}
+
+/** Shows database text (the shared `localized` pipe) in the shop's current language. */
+export function provideShopLanguage(): Provider {
+  return { provide: CURRENT_LANG, useFactory: () => inject(LanguageService).current };
 }

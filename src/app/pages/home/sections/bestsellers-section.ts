@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CARD_TINTS } from '../../../core/products/product.palette';
+import { CARD_TINTS } from '@cikloni/shared';
 import { ProductService } from '../../../core/products/product.service';
 import { LoadError } from '../../../shared/load-error/load-error';
 import { ProductCard } from '../../../shared/product-card/product-card';

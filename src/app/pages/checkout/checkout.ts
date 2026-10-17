@@ -20,19 +20,20 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CircleAlert, LucideAngularModule } from 'lucide-angular';
 import {
-  DELIVERY_METHODS,
+  CreateOrderError,
+  CreateOrderFailure,
   DELIVERY_METHOD_IDS,
+  DELIVERY_METHODS,
   DeliveryMethodId,
   FIELD_MAX_LENGTH,
+  LocalizedPipe,
+  normalizeGeorgianPhone,
   PAYMENT_METHOD_IDS,
   PaymentMethodId,
-  normalizeGeorgianPhone,
-} from '../../core/checkout/checkout.config';
+} from '@cikloni/shared';
 import { CheckoutService } from '../../core/checkout/checkout.service';
-import { CreateOrderError, CreateOrderFailure } from '../../core/data-access/orders.api';
 import { ProductService } from '../../core/products/product.service';
 import { LoadError } from '../../shared/load-error/load-error';
-import { LocalizedPipe } from '../../shared/localized/localized.pipe';
 import { OrderSummary, OrderSummaryLine } from '../../shared/order-summary/order-summary';
 import { PricePipe } from '../../shared/price/price.pipe';
 import { TextField } from '../../shared/text-field/text-field';

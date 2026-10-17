@@ -3,10 +3,10 @@ import { Title } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { firstValueFrom } from 'rxjs';
-import { mapRows, provideCatalogTesting, SEED_ROWS } from '../../../testing/catalog-testing';
+import { mapRows, provideCatalogTesting, SEED_ROWS } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { CartService } from '../../core/cart/cart.service';
-import { Product } from '../../core/products/product.model';
+import { Product } from '@cikloni/shared';
 import { LanguageService } from '../../core/i18n/language.service';
 import { ProductPage } from './product';
 

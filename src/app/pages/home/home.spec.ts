@@ -2,10 +2,10 @@ import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { mapRows, provideCatalogTesting, SEED_ROWS } from '../../../testing/catalog-testing';
+import { mapRows, provideCatalogTesting, SEED_ROWS } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { LanguageService } from '../../core/i18n/language.service';
-import { Product } from '../../core/products/product.model';
+import { Product } from '@cikloni/shared';
 import { Home } from './home';
 
 describe('Home', () => {

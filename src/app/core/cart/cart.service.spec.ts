@@ -1,6 +1,6 @@
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideCatalogTesting } from '../../../testing/catalog-testing';
+import { provideCatalogTesting } from '@cikloni/shared/testing';
 import { CART_STORAGE_KEY, CartService, MAX_LINE_QUANTITY } from './cart.service';
 
 describe('CartService', () => {

@@ -1,7 +1,6 @@
 import { Component, computed, input, model } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ColorId, ProductColor } from '../../core/products/product.model';
-import { LocalizedPipe } from '../localized/localized.pipe';
+import { ColorId, LocalizedPipe, ProductColor } from '@cikloni/shared';
 
 /** Round color swatches with the selected color named in the legend (design/PRODUCT.md). */
 @Component({

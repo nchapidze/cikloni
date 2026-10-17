@@ -1,14 +1,17 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { CartItem, CartService } from '../cart/cart.service';
-import { OrdersApi } from '../data-access/orders.api';
-import { Product, ProductColor, findVariant, productImage } from '../products/product.model';
-import { ProductService } from '../products/product.service';
 import {
   CreateOrderResult,
   DeliveryMethodId,
+  findVariant,
+  OrdersApi,
   PaymentMethodId,
+  Product,
+  ProductColor,
+  productImage,
   StockProblem,
-} from './checkout.config';
+} from '@cikloni/shared';
+import { ProductService } from '../products/product.service';
 import { OrderConfirmations } from './order-confirmations';
 
 export interface CheckoutLine {

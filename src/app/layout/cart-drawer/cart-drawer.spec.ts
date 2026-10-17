@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { provideCatalogTesting } from '../../../testing/catalog-testing';
+import { provideCatalogTesting } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { App } from '../../app';
 import { routes } from '../../app.routes';

@@ -1,6 +1,5 @@
 import { Injectable, computed, inject, resource } from '@angular/core';
-import { ProductsApi } from '../data-access/products.api';
-import { Product } from './product.model';
+import { Product, ProductsApi } from '@cikloni/shared';
 
 export type CatalogStatus = 'loading' | 'error' | 'ready';
 

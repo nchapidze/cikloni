@@ -1,9 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ABSORBENCY, Product, productImage } from '../../core/products/product.model';
-import { CARD_TINTS } from '../../core/products/product.palette';
-import { LocalizedPipe } from '../localized/localized.pipe';
+import { ABSORBENCY, CARD_TINTS, LocalizedPipe, Product, productImage } from '@cikloni/shared';
 
 /** Bestseller card (design/HOME.md section 5); the whole card links to the product page. */
 @Component({

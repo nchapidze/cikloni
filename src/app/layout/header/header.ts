@@ -7,7 +7,7 @@ import { LucideAngularModule, Menu, ShoppingBag, X } from 'lucide-angular';
 import { CartService } from '../../core/cart/cart.service';
 import { CartDrawerService } from '../cart-drawer/cart-drawer.service';
 import { LanguageToggle } from '../../shared/language-toggle/language-toggle';
-import { LogoMark } from '../../shared/logo-mark/logo-mark';
+import { LogoMark } from '@cikloni/shared';
 
 /** Tailwind's md breakpoint: below it the cart button opens the /cart page. */
 const CART_DRAWER_MEDIA = '(min-width: 48rem)';

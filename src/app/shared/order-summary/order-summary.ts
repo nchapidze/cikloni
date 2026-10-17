@@ -1,7 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LocalizedText } from '../../core/i18n/localized-text';
-import { LocalizedPipe } from '../localized/localized.pipe';
+import { LocalizedPipe, LocalizedText } from '@cikloni/shared';
 import { PricePipe } from '../price/price.pipe';
 
 export interface OrderSummaryLine {

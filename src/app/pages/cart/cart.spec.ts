@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { firstValueFrom } from 'rxjs';
-import { provideCatalogTesting } from '../../../testing/catalog-testing';
+import { provideCatalogTesting } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { CartService } from '../../core/cart/cart.service';
 import { LanguageService } from '../../core/i18n/language.service';

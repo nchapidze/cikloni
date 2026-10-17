@@ -38,4 +38,51 @@ module.exports = defineConfig([
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
     rules: {},
   },
+  // The two apps share code only through the shared library (CLAUDE.md).
+  {
+    files: ['src/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [{ name: '@cikloni/shared/admin', message: 'Admin-only code; not for the shop.' }],
+          patterns: [
+            { group: ['**/projects/**'], message: 'Import shared code from @cikloni/shared.' },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['projects/admin/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/src/app/**', '**/shared/src/**'],
+              message: 'Import from @cikloni/shared.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['projects/shared/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/src/app/**', '**/admin/src/**'],
+              message: 'Shared must not import from an app.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);

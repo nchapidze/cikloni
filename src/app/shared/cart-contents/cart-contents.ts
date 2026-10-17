@@ -13,16 +13,16 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { CartItem, CartService, MAX_LINE_QUANTITY } from '../../core/cart/cart.service';
-import { LocalizedText } from '../../core/i18n/localized-text';
 import {
+  LocalizedPipe,
+  LocalizedText,
   Product,
   ProductColor,
   ProductImage,
   productImage,
-} from '../../core/products/product.model';
+} from '@cikloni/shared';
 import { ProductService } from '../../core/products/product.service';
 import { LoadError } from '../load-error/load-error';
-import { LocalizedPipe } from '../localized/localized.pipe';
 import { QuantityStepper } from '../quantity-stepper/quantity-stepper';
 
 interface CartLine {

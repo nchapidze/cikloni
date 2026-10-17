@@ -4,7 +4,7 @@ import { App } from './app';
 import { routes } from './app.routes';
 import { CartService } from './core/cart/cart.service';
 import { LanguageService } from './core/i18n/language.service';
-import { provideCatalogTesting } from '../testing/catalog-testing';
+import { provideCatalogTesting } from '@cikloni/shared/testing';
 import { provideTranslateTesting } from '../testing/translate-testing';
 import { firstValueFrom } from 'rxjs';
 

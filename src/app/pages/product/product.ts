@@ -5,13 +5,19 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
 import { CartService } from '../../core/cart/cart.service';
 import { LanguageService } from '../../core/i18n/language.service';
-import { LocalizedText, localize } from '../../core/i18n/localized-text';
-import { ABSORBENCY, ColorId, Size, productImage } from '../../core/products/product.model';
+import {
+  ABSORBENCY,
+  ColorId,
+  localize,
+  LocalizedPipe,
+  LocalizedText,
+  productImage,
+  Size,
+} from '@cikloni/shared';
 import { ProductService } from '../../core/products/product.service';
 import { AbsorbencyDrops } from '../../shared/absorbency-drops/absorbency-drops';
 import { ColorSwatchPicker } from '../../shared/color-swatch-picker/color-swatch-picker';
 import { LoadError } from '../../shared/load-error/load-error';
-import { LocalizedPipe } from '../../shared/localized/localized.pipe';
 import { QuantityStepper } from '../../shared/quantity-stepper/quantity-stepper';
 import { SizePicker } from '../../shared/size-picker/size-picker';
 

@@ -13,5 +13,6 @@
 - Backend: Supabase (Postgres, Auth, Storage, Edge Functions). Row Level Security is enabled on every table.
 - Never trust prices, totals or stock from the browser. Orders are created server-side, where prices are recalculated from the database.
 - Secrets (service role key, payment keys) never go in Angular code or environment files committed to git.
-- The admin panel lives under /admin, is lazy-loaded, and is not translated (Georgian only).
-- Supabase may later be replaced by a NestJS API. Components never import supabase-js; all data access goes through services in src/app/core/data-access/. Business logic for orders lives server-side only.
+- The admin app (projects/admin) is not translated (Georgian only) and is not indexed (noindex)."
+- Supabase may later be replaced by a NestJS API. Components never import supabase-js; all data access goes through services in projects/shared/src/lib/data-access/ (admin-only ones exported from @cikloni/shared/admin). Business logic for orders lives server-side only.
+- Workspace has two apps: "shop" (cikloni.ge) and "admin" (admin.cikloni.ge), plus a "shared" library. Shared types, pipes, models and data-access services live in shared; never import between the two apps directly.

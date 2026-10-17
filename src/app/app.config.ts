@@ -9,8 +9,10 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { DEFAULT_LANG, provideSupabaseConfig } from '@cikloni/shared';
+import { environment } from '../environments/environment';
 import { routes } from './app.routes';
-import { DEFAULT_LANG, LanguageService } from './core/i18n/language.service';
+import { LanguageService, provideShopLanguage } from './core/i18n/language.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,5 +30,7 @@ export const appConfig: ApplicationConfig = {
     }),
     // Load the saved (or default) language before the first render so no raw keys flash.
     provideAppInitializer(() => inject(LanguageService).init()),
+    provideShopLanguage(),
+    provideSupabaseConfig(environment.supabase),
   ],
 };

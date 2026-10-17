@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ABSORBENCY } from '../../../core/products/product.model';
+import { ABSORBENCY } from '@cikloni/shared';
 import { AbsorbencyDrops } from '../../../shared/absorbency-drops/absorbency-drops';
 
 /** design/HOME.md section 7. */

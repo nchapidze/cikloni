@@ -1,5 +1,5 @@
 import { DOCUMENT, DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
-import { ColorId, Product, Size, hasVariant, isSize } from '../products/product.model';
+import { ColorId, hasVariant, isSize, Product, Size } from '@cikloni/shared';
 import { ProductService } from '../products/product.service';
 
 export interface CartItem {

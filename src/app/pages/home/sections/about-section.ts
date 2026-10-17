@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LogoMark } from '../../../shared/logo-mark/logo-mark';
+import { LogoMark } from '@cikloni/shared';
 
 /** design/HOME.md section 9. */
 @Component({
