@@ -46,8 +46,20 @@ describe('parseCreateOrderRequest', () => {
         },
         deliveryMethod: 'tbilisi',
         paymentMethod: 'cash',
+        language: 'ka',
       },
     });
+  });
+
+  it('keeps a known site language and falls back to Georgian otherwise', () => {
+    const language = (value: unknown) => {
+      const result = parseCreateOrderRequest({ ...valid, language: value });
+      return result.ok && result.value.language;
+    };
+    expect(language('en')).toBe('en');
+    expect(language('ka')).toBe('ka');
+    expect(language(undefined)).toBe('ka');
+    expect(language('de')).toBe('ka');
   });
 
   it('requires a city for regional delivery', () => {

@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 import { LocalizedText } from '../i18n/localized-text';
 import {
   OrderDetails,
@@ -153,16 +154,19 @@ export class AdminOrdersApi {
 
   /**
    * Changes the status if it is still `from`; cancelling also returns the items to stock, in
-   * the same transaction (set_order_status). Throws StatusChangeError.
+   * the same transaction (set_order_status). Goes through the set-order-status Edge Function,
+   * which also emails the customer when the order ships. Throws StatusChangeError.
    */
   async setStatus(id: string, from: OrderStatus, to: OrderStatus): Promise<void> {
-    const { error } = await this.supabase.rpc('set_order_status', {
-      order_id: id,
-      new_status: to,
-      expected_status: from,
+    const { error } = await this.supabase.functions.invoke('set-order-status', {
+      body: { orderId: id, from, to },
     });
     if (!error) return;
-    const failure = STATUS_FAILURES.find((f) => f === error.message) ?? 'NETWORK';
+    const body =
+      error instanceof FunctionsHttpError
+        ? await (error.context as Response).json().catch(() => null)
+        : null;
+    const failure = STATUS_FAILURES.find((f) => f === body?.error) ?? 'NETWORK';
     throw new StatusChangeError(failure);
   }
 }

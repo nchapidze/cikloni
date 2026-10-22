@@ -418,3 +418,8 @@ enabled = true
 # require one. The function validates its own input.
 [functions.create-order]
 verify_jwt = false
+
+# Admin status changes: the function passes the caller's token on to set_order_status, which
+# refuses anyone who is not an admin.
+[functions.set-order-status]
+verify_jwt = false

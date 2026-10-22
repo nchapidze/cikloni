@@ -40,6 +40,14 @@ export type PaymentNextStep =
   | { type: 'redirect'; url: string }; // e.g. a bank's card payment page
 
 // ---------------------------------------------------------------------------
+// Language
+// ---------------------------------------------------------------------------
+
+/** Site languages; stored on the order so emails about it use the customer's language. */
+export const ORDER_LANGUAGES = ['ka', 'en'] as const;
+export type OrderLanguage = (typeof ORDER_LANGUAGES)[number];
+
+// ---------------------------------------------------------------------------
 // Customer details
 // ---------------------------------------------------------------------------
 
@@ -87,6 +95,8 @@ export interface CreateOrderRequest {
   };
   deliveryMethod: DeliveryMethodId;
   paymentMethod: PaymentMethodId;
+  /** The site language at checkout. */
+  language: OrderLanguage;
 }
 
 /** Product and color names are { ka, en } objects, as stored in the database. */
@@ -186,6 +196,9 @@ export function parseCreateOrderRequest(body: unknown): ParseResult<CreateOrderR
   const notes = text(customer['notes']);
   if (notes.length > FIELD_MAX_LENGTH.notes) fields.push('notes');
 
+  // Never an error: a tab opened before this field existed still gets its order through.
+  const language = ORDER_LANGUAGES.find((l) => l === input['language']) ?? 'ka';
+
   if (fields.length) return { ok: false, fields };
   return {
     ok: true,
@@ -201,6 +214,7 @@ export function parseCreateOrderRequest(body: unknown): ParseResult<CreateOrderR
       },
       deliveryMethod,
       paymentMethod,
+      language,
     },
   };
 }

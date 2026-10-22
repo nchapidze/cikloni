@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { FunctionsFetchError, FunctionsHttpError } from '@supabase/supabase-js';
 import { ADMIN_SUPABASE } from '../supabase/admin-supabase.client';
 import {
   AdminOrdersApi,
@@ -78,28 +79,39 @@ describe('toOrderDetails', () => {
 });
 
 describe('AdminOrdersApi.setStatus', () => {
-  function setup(error: { message: string } | null) {
-    const rpc = vi.fn().mockResolvedValue({ data: error ? null : 'cancelled', error });
-    TestBed.configureTestingModule({ providers: [{ provide: ADMIN_SUPABASE, useValue: { rpc } }] });
-    return { api: TestBed.inject(AdminOrdersApi), rpc };
+  /** `error`: the Edge Function's { error } body, or a fetch failure without a response. */
+  function setup(error: string | 'fetch' | null) {
+    const invoke = vi.fn().mockResolvedValue(
+      error === null
+        ? { data: { status: 'cancelled' }, error: null }
+        : {
+            data: null,
+            error:
+              error === 'fetch'
+                ? new FunctionsFetchError(new TypeError('Failed to fetch'))
+                : new FunctionsHttpError(new Response(JSON.stringify({ error }), { status: 409 })),
+          },
+    );
+    TestBed.configureTestingModule({
+      providers: [{ provide: ADMIN_SUPABASE, useValue: { functions: { invoke } } }],
+    });
+    return { api: TestBed.inject(AdminOrdersApi), invoke };
   }
 
-  it('calls set_order_status with the status the admin saw', async () => {
-    const { api, rpc } = setup(null);
+  it('calls set-order-status with the status the admin saw', async () => {
+    const { api, invoke } = setup(null);
 
     await api.setStatus('o1', 'new', 'cancelled');
 
-    expect(rpc).toHaveBeenCalledWith('set_order_status', {
-      order_id: 'o1',
-      new_status: 'cancelled',
-      expected_status: 'new',
+    expect(invoke).toHaveBeenCalledWith('set-order-status', {
+      body: { orderId: 'o1', from: 'new', to: 'cancelled' },
     });
   });
 
   it.each(['STATUS_CHANGED', 'INVALID_TRANSITION', 'FORBIDDEN', 'ORDER_NOT_FOUND'])(
     'reports %s',
     async (message) => {
-      const { api } = setup({ message });
+      const { api } = setup(message);
       await expect(api.setStatus('o1', 'new', 'shipped')).rejects.toEqual(
         new StatusChangeError(message as never),
       );
@@ -107,9 +119,12 @@ describe('AdminOrdersApi.setStatus', () => {
   );
 
   it('reports anything else as NETWORK', async () => {
-    const { api } = setup({ message: 'Failed to fetch' });
-    await expect(api.setStatus('o1', 'new', 'shipped')).rejects.toMatchObject({
-      failure: 'NETWORK',
-    });
+    for (const error of ['SERVER_ERROR', 'fetch']) {
+      TestBed.resetTestingModule();
+      const { api } = setup(error);
+      await expect(api.setStatus('o1', 'new', 'shipped')).rejects.toMatchObject({
+        failure: 'NETWORK',
+      });
+    }
   });
 });

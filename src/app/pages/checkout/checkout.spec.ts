@@ -176,6 +176,7 @@ describe('CheckoutPage', () => {
       },
       deliveryMethod: 'tbilisi',
       paymentMethod: 'cash',
+      language: 'ka',
     });
     expect(cart.items()).toEqual([]);
     expect(TestBed.inject(Router).url).toBe('/order/CK-001001');

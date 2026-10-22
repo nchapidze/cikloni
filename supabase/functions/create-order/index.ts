@@ -2,16 +2,26 @@
 // re-reads prices and stock and writes the order, its items and the stock change in one
 // transaction. Deployed with verify_jwt = false (see supabase/config.toml): guests have no
 // session, and the publishable key is not a JWT.
+//
+// After the order is saved, the confirmation (to the customer, if they gave an email) and the
+// shop's notification are sent in the background: email failures are logged, never returned.
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import {
   type CreateOrderErrorBody,
+  type CreateOrderRequest,
   type CreateOrderResult,
   DELIVERY_METHODS,
   type PaymentMethodId,
   type PaymentNextStep,
   parseCreateOrderRequest,
 } from '../_shared/checkout.ts';
+import { emailConfig, emailLinks, runInBackground, sendEmail } from '../_shared/email.ts';
+import {
+  adminNewOrderEmail,
+  type EmailOrder,
+  orderConfirmationEmail,
+} from '../_shared/order-emails.ts';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -28,6 +38,9 @@ const supabase = createClient(
 
 type OrderRow = Omit<CreateOrderResult, 'deliveryMethod' | 'paymentMethod' | 'payment'>;
 
+/** What create_order returns: the order plus its id, which stays on the server. */
+type CreatedOrder = OrderRow & { orderId: string };
+
 /**
  * Starts payment for a new order. Card payment adds an entry here that creates a payment
  * session with the bank and returns { type: 'redirect', url }.
@@ -35,6 +48,57 @@ type OrderRow = Omit<CreateOrderResult, 'deliveryMethod' | 'paymentMethod' | 'pa
 const PAYMENT_HANDLERS: Record<PaymentMethodId, (order: OrderRow) => Promise<PaymentNextStep>> = {
   cash: () => Promise.resolve({ type: 'none' }),
 };
+
+/** Customer confirmation (if they gave an email) and the shop's notification. */
+async function sendOrderEmails(orderId: string, order: OrderRow, request: CreateOrderRequest) {
+  const config = emailConfig();
+  if (!config) return;
+  const links = emailLinks(config);
+  const { customer } = request;
+  const emailOrder: EmailOrder = {
+    orderNumber: order.orderNumber,
+    customerName: customer.name,
+    phone: customer.phone,
+    email: customer.email ?? null,
+    city: order.city,
+    address: customer.address,
+    notes: customer.notes ?? null,
+    deliveryMethod: request.deliveryMethod,
+    paymentMethod: request.paymentMethod,
+    items: order.items,
+    subtotalGel: order.subtotalGel,
+    deliveryFeeGel: order.deliveryFeeGel,
+    totalGel: order.totalGel,
+    language: request.language,
+  };
+
+  // Independent: one failing does not stop the other.
+  const results = await Promise.allSettled([
+    customer.email &&
+      sendEmail(config, {
+        ...orderConfirmationEmail(emailOrder, links),
+        to: customer.email,
+        replyTo: config.replyTo,
+        idempotencyKey: `order-confirmation/${order.orderNumber}`,
+      }),
+    config.notificationEmail &&
+      sendEmail(config, {
+        ...adminNewOrderEmail(emailOrder, {
+          ...links,
+          adminOrderUrl: `${config.adminUrl}/orders/${orderId}`,
+        }),
+        to: config.notificationEmail,
+        // Replying to the notification writes to the customer.
+        replyTo: customer.email,
+        idempotencyKey: `order-notification/${order.orderNumber}`,
+      }),
+  ]);
+  for (const result of results) {
+    if (result.status === 'rejected') {
+      console.error('order email failed', order.orderNumber, result.reason);
+    }
+  }
+}
 
 function json(status: number, body: CreateOrderResult | CreateOrderErrorBody): Response {
   return new Response(JSON.stringify(body), {
@@ -64,6 +128,7 @@ Deno.serve(async (req) => {
     delivery_method: request.deliveryMethod,
     delivery_fee_gel: DELIVERY_METHODS[request.deliveryMethod].feeGel,
     payment_method: request.paymentMethod,
+    order_language: request.language,
   });
 
   if (error) {
@@ -74,7 +139,8 @@ Deno.serve(async (req) => {
     return json(500, { error: 'SERVER_ERROR' });
   }
 
-  const order = data as OrderRow;
+  const { orderId, ...order } = data as CreatedOrder;
+  runInBackground('order emails', () => sendOrderEmails(orderId, order, request));
   try {
     const payment = await PAYMENT_HANDLERS[request.paymentMethod](order);
     return json(200, {

@@ -11,6 +11,7 @@ import {
   productThumbnail,
   StockProblem,
 } from '@cikloni/shared';
+import { LanguageService } from '../i18n/language.service';
 import { ProductService } from '../products/product.service';
 import { OrderConfirmations } from './order-confirmations';
 
@@ -40,6 +41,7 @@ export class CheckoutService {
   private readonly products = inject(ProductService);
   private readonly api = inject(OrdersApi);
   private readonly confirmations = inject(OrderConfirmations);
+  private readonly language = inject(LanguageService);
 
   /** Cart lines resolved to catalog variants (empty until the catalog has loaded). */
   readonly lines = computed<CheckoutLine[]>(() =>
@@ -71,6 +73,8 @@ export class CheckoutService {
       },
       deliveryMethod: details.deliveryMethod,
       paymentMethod: details.paymentMethod,
+      // Emails about the order are sent in this language.
+      language: this.language.current(),
     });
     this.confirmations.save({
       ...result,
